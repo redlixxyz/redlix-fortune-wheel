@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortune Wheel</title>
+    <style>
+        :root {
+            --primary-red: rgb(128, 26, 48);
+            --dark-gray: rgb(38, 38, 38);
+            --burgundy: rgb(49, 18, 26);
+            --white: #ffffff;
+            --light-gray: #f5f5f5;
+            --border: #d0d0d0;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            background: var(--white);
+            color: var(--dark-gray);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            min-height: 100vh;
+            padding: 0;
+            line-height: 1.5;
+        }
+        
+        .wheel-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: var(--primary-red);
+            padding: 1rem 2rem;
+            border: 3px solid var(--dark-gray);
+            border-left: none;
+            border-right: none;
+            border-top: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+        
+        .header h2 {
+            color: var(--white);
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
+        }
+        
+        .header h2 {
+            color: var(--white);
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
+        }
+        
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            width: 100%;
+        }
+        
+        .wheel-section {
+            background: var(--light-gray);
+            border: 3px solid var(--dark-gray);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .wheel-wrapper {
+            position: relative;
+            width: 350px;
+            height: 350px;
+            margin-bottom: 1.5rem;
+        }
+        
+        #wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 6px solid var(--dark-gray);
+            position: relative;
+            transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        
+        .arrow {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 30px solid var(--primary-red);
+            z-index: 10;
+            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.3));
+        }
+        
+        #spinBtn {
+            background: var(--primary-red);
+            border: 3px solid var(--dark-gray);
+            color: var(--white);
+            padding: 0.75rem 3rem;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: all 0.15s;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        #spinBtn:hover {
+            background: var(--burgundy);
+        }
+        
+        #spinBtn:active {
+            transform: scale(0.95);
+        }
+        
+        #spinBtn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        #spinBtn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .controls-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 1400px;
+        }
+        
+        .control-section {
+            background: var(--light-gray);
+            border: 3px solid var(--dark-gray);
+            padding: 1.25rem;
+        }
+        
+        .control-section h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--dark-gray);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--dark-gray);
+            margin: 0 0 1rem 0;
+        }
+        
+        .control-section h3::before {
+            content: '';
+            display: block;
+            width: 6px;
+            height: 6px;
+            background: var(--primary-red);
+            border: 2px solid var(--dark-gray);
+        }
+        
+        .palette-selector {
+            margin-bottom: 1rem;
+        }
+        
+        .palette-selector label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--dark-gray);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        #paletteSelect {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--white);
+            border: 3px solid var(--dark-gray);
+            color: var(--dark-gray);
+            font-size: 0.85rem;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        
+        #paletteSelect:hover {
+            border-color: var(--primary-red);
+        }
+        
+        #paletteSelect:focus {
+            outline: none;
+            border-color: var(--primary-red);
+        }
+        
+        .palette-preview {
+            display: flex;
+            gap: 3px;
+            margin-top: 0.75rem;
+        }
+        
+        .palette-color {
+            flex: 1;
+            height: 30px;
+            border: 2px solid var(--dark-gray);
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        
+        .palette-color:hover {
+            transform: scale(1.05);
+        }
+        
+        .palette-color:hover {
+            transform: scale(1.05);
+        }
+        
+        #fieldsList {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+        
+        #fieldsList::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        #fieldsList::-webkit-scrollbar-track {
+            background: var(--white);
+            border: 1px solid var(--dark-gray);
+        }
+        
+        #fieldsList::-webkit-scrollbar-thumb {
+            background: var(--primary-red);
+            border: 1px solid var(--dark-gray);
+        }
+        
+        #fieldsList::-webkit-scrollbar-thumb:hover {
+            background: var(--burgundy);
+        }
+        
+        .field-item {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            align-items: center;
+        }
+        
+        .field-item input[type="text"] {
+            flex: 2;
+            padding: 0.75rem;
+            background: var(--white);
+            border: 3px solid var(--dark-gray);
+            color: var(--dark-gray);
+            font-size: 0.85rem;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.2s;
+        }
+        
+        .field-item input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary-red);
+        }
+        
+        .field-item input[type="color"] {
+            width: 50px;
+            height: 42px;
+            border: 3px solid var(--dark-gray);
+            background: var(--white);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .field-item input[type="color"]:hover {
+            transform: scale(1.05);
+        }
+        
+        .field-item input[type="number"] {
+            width: 70px;
+            padding: 0.75rem 0.5rem;
+            background: var(--white);
+            border: 3px solid var(--dark-gray);
+            color: var(--dark-gray);
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.2s;
+        }
+        
+        .field-item input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary-red);
+        }
+        
+        .field-item button {
+            background: var(--white);
+            border: 3px solid var(--dark-gray);
+            color: var(--dark-gray);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.15s;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .field-item button:hover {
+            background: var(--primary-red);
+            color: var(--white);
+        }
+        
+        .field-item button:active {
+            transform: scale(0.95);
+        }
+        
+        .field-item button:active {
+            transform: scale(0.95);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .button-group button {
+            flex: 1;
+            background: var(--white);
+            border: 3px solid var(--dark-gray);
+            color: var(--dark-gray);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.15s;
+            min-width: 100px;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        #addFieldBtn {
+            background: var(--primary-red);
+            color: var(--white);
+        }
+        
+        #addFieldBtn:hover {
+            background: var(--burgundy);
+        }
+        
+        #addFieldBtn:active {
+            transform: scale(0.95);
+        }
+        
+        #clearFieldsBtn {
+            background: var(--burgundy);
+            color: var(--white);
+        }
+        
+        #clearFieldsBtn:hover {
+            background: var(--primary-red);
+        }
+        
+        #clearFieldsBtn:active {
+            transform: scale(0.95);
+        }
+        
+        #clearFieldsBtn:active {
+            transform: scale(0.95);
+        }
+        
+        .import-export-section {
+            width: 100%;
+            background: var(--light-gray);
+            border: 3px solid var(--dark-gray);
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .import-export-section h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--dark-gray);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--dark-gray);
+            margin: 0 0 1rem 0;
+        }
+        
+        .import-export-section h3::before {
+            content: '';
+            display: block;
+            width: 6px;
+            height: 6px;
+            background: var(--primary-red);
+            border: 2px solid var(--dark-gray);
+        }
+        
+        .import-export-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .import-export-buttons button {
+            flex: 1;
+            min-width: 150px;
+            background: var(--white);
+            border: 3px solid var(--dark-gray);
+            color: var(--dark-gray);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.15s;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        #exportBtn {
+            background: var(--primary-red);
+            color: var(--white);
+        }
+        
+        #exportBtn:hover {
+            background: var(--burgundy);
+        }
+        
+        #exportBtn:active {
+            transform: scale(0.95);
+        }
+        
+        #importBtn {
+            background: var(--burgundy);
+            color: var(--white);
+        }
+        
+        #importBtn:hover {
+            background: var(--primary-red);
+        }
+        
+        #importBtn:active {
+            transform: scale(0.95);
+        }
+        
+        #fileInput {
+            display: none;
+        }
+        
+        .status-message {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            font-weight: 700;
+            border: 3px solid var(--dark-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+            display: none;
+        }
+        
+        .status-message.success {
+            background: var(--primary-red);
+            color: var(--white);
+            display: block;
+        }
+        
+        .status-message.error {
+            background: var(--burgundy);
+            color: var(--white);
+            display: block;
+        }
+        
+        .status-message.error {
+            background: var(--burgundy);
+            color: var(--white);
+            display: block;
+        }
+        
+        .status-message.error {
+            background: var(--burgundy);
+            color: var(--white);
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 0.75rem;
+            }
+            
+            .controls-wrapper {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .wheel-section {
+                padding: 1rem;
+            }
+            
+            .wheel-wrapper {
+                width: 250px;
+                height: 250px;
+            }
+            
+            #wheel {
+                border-width: 4px;
+            }
+            
+            .arrow {
+                border-left: 12px solid transparent;
+                border-right: 12px solid transparent;
+                border-top: 24px solid var(--primary-red);
+                top: -20px;
+            }
+            
+            #spinBtn {
+                padding: 0.6rem 2rem;
+                font-size: 0.85rem;
+            }
+            
+            .control-section {
+                padding: 1rem;
+            }
+            
+            .control-section h3 {
+                font-size: 0.9rem;
+            }
+            
+            .field-item {
+                flex-wrap: wrap;
+            }
+            
+            .field-item input[type="text"] {
+                width: 100%;
+                flex: 1 1 100%;
+                margin-bottom: 0.5rem;
+            }
+            
+            .field-item input[type="color"] {
+                width: 45px;
+                height: 38px;
+            }
+            
+            .field-item input[type="number"] {
+                width: 60px;
+            }
+            
+            .field-item button {
+                flex: 1;
+            }
+            
+            .button-group button {
+                min-width: auto;
+            }
+            
+            .import-export-section {
+                padding: 1rem;
+            }
+            
+            .import-export-section h3 {
+                font-size: 0.9rem;
+            }
+            
+            .import-export-buttons {
+                flex-direction: column;
+            }
+            
+            .import-export-buttons button {
+                min-width: 100%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 0.5rem;
+            }
+            
+            .wheel-section {
+                padding: 0.75rem;
+            }
+            
+            .wheel-wrapper {
+                width: 200px;
+                height: 200px;
+            }
+            
+            #wheel {
+                border-width: 3px;
+            }
+            
+            .arrow {
+                border-left: 10px solid transparent;
+                border-right: 10px solid transparent;
+                border-top: 20px solid var(--primary-red);
+                top: -18px;
+            }
+            
+            #spinBtn {
+                padding: 0.5rem 1.5rem;
+                font-size: 0.75rem;
+                letter-spacing: 1px;
+            }
+            
+            .control-section,
+            .import-export-section {
+                padding: 0.75rem;
+            }
+            
+            .control-section h3,
+            .import-export-section h3 {
+                font-size: 0.85rem;
+                letter-spacing: 1px;
+            }
+            
+            .palette-selector label,
+            label {
+                font-size: 0.75rem;
+            }
+            
+            #paletteSelect,
+            .field-item input[type="text"],
+            .field-item input[type="number"] {
+                padding: 0.5rem;
+                font-size: 0.75rem;
+            }
+            
+            .field-item input[type="color"] {
+                width: 40px;
+                height: 35px;
+            }
+            
+            .field-item input[type="number"] {
+                width: 55px;
+            }
+            
+            .field-item button,
+            .button-group button,
+            .import-export-buttons button {
+                padding: 0.4rem 0.75rem;
+                font-size: 0.7rem;
+            }
+            
+            .palette-preview {
+                gap: 2px;
+            }
+            
+            .palette-color {
+                height: 24px;
+            }
+            
+            .status-message {
+                font-size: 0.75rem;
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wheel-container">
+        <div class="header">
+            <h2>🎡 Fortune Wheel</h2>
+        </div>
+        
+        <div class="main-content">
+            <div class="wheel-section">
+                <div class="wheel-wrapper">
+                    <div class="arrow"></div>
+                    <canvas id="wheel" width="400" height="400"></canvas>
+                </div>
+                
+                <button id="spinBtn">▶️ SPIN</button>
+            </div>
+            
+            <div class="controls-wrapper">
+                <div class="control-section">
+                    <h3>Color Palette</h3>
+                    <div class="palette-selector">
+                        <label for="paletteSelect">Choose Palette</label>
+                        <select id="paletteSelect"></select>
+                    </div>
+                    <div class="palette-preview" id="palettePreview"></div>
+                </div>
+                
+                <div class="control-section">
+                    <h3>Wheel Fields</h3>
+                    <div id="fieldsList"></div>
+                    <div class="button-group">
+                        <button id="addFieldBtn">+ Add</button>
+                        <button id="clearFieldsBtn">Clear</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="import-export-section">
+                <h3>Import / Export Settings</h3>
+                <div class="import-export-buttons">
+                    <button id="exportBtn">📥 Export Configuration</button>
+                    <button id="importBtn">📤 Import Configuration</button>
+                    <input type="file" id="fileInput" accept=".json" />
+                </div>
+                <div id="statusMessage" class="status-message"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modern color palettes
+        const colorPalettes = {
+            'Sunset Vibes': ['#FF6B6B', '#FF8E53', '#FFA07A', '#FFB84D', '#FFC947'],
+            'Ocean Breeze': ['#0A4D68', '#088395', '#05BFDB', '#00FFCA', '#7DFFEA'],
+            'Forest Fresh': ['#1B4D3E', '#2D8B5F', '#3FA876', '#6FC77B', '#A8E6A1'],
+            'Candy Pop': ['#FF6FB5', '#FF8DC7', '#FFABDB', '#C77DFF', '#9D4EDD'],
+            'Neon Nights': ['#FF006E', '#FB5607', '#FFBE0B', '#8338EC', '#3A86FF'],
+            'Peachy Keen': ['#FFB5A7', '#FFC3A0', '#FFD1B0', '#FFDFB3', '#FFEDC2'],
+            'Berry Blast': ['#D62828', '#F77F00', '#FCBF49', '#EAE2B7', '#C9ADA7'],
+            'Tropical Dream': ['#06FFA5', '#00D4FF', '#B75CFF', '#FF6EC7', '#FFD100'],
+            'Retro Wave': ['#FF006E', '#8338EC', '#3A86FF', '#06FFA5', '#FFBE0B'],
+            'Cool Mint': ['#52B788', '#74C69D', '#95D5B2', '#B7E4C7', '#D8F3DC']
+        };
+        
+        let currentPalette = 'Sunset Vibes';
+        let fields = [
+            { text: 'Prize 1', color: '#FF6B6B', percentage: null },
+            { text: 'Prize 2', color: '#4ECDC4', percentage: null },
+            { text: 'Prize 3', color: '#45B7D1', percentage: null },
+            { text: 'Prize 4', color: '#FFA07A', percentage: null }
+        ];
+        
+        let isSpinning = false;
+        let currentRotation = 0;
+        
+        function renderPaletteSelector() {
+            const select = document.getElementById('paletteSelect');
+            select.innerHTML = '';
+            
+            Object.keys(colorPalettes).forEach(paletteName => {
+                const option = document.createElement('option');
+                option.value = paletteName;
+                option.textContent = paletteName;
+                if (paletteName === currentPalette) {
+                    option.selected = true;
+                }
+                select.appendChild(option);
+            });
+            
+            select.addEventListener('change', (e) => {
+                currentPalette = e.target.value;
+                applyPalette(currentPalette);
+                updatePalettePreview();
+            });
+            
+            updatePalettePreview();
+        }
+        
+        function updatePalettePreview() {
+            const preview = document.getElementById('palettePreview');
+            preview.innerHTML = '';
+            
+            const colors = colorPalettes[currentPalette];
+            colors.forEach(color => {
+                const colorBox = document.createElement('div');
+                colorBox.className = 'palette-color';
+                colorBox.style.backgroundColor = color;
+                colorBox.title = color;
+                preview.appendChild(colorBox);
+            });
+        }
+        
+        function applyPalette(paletteName) {
+            const colors = colorPalettes[paletteName];
+            
+            fields.forEach((field, index) => {
+                field.color = colors[index % colors.length];
+            });
+            
+            renderFields();
+            drawWheel();
+        }
+        
+        function getNextColorForPalette() {
+            const colors = colorPalettes[currentPalette];
+            return colors[fields.length % colors.length];
+        }
+        
+        function calculatePercentages() {
+            const customFields = fields.filter(f => f.percentage !== null);
+            const autoFields = fields.filter(f => f.percentage === null);
+            
+            let customTotal = customFields.reduce((sum, f) => sum + f.percentage, 0);
+            
+            if (customTotal > 100) {
+                customTotal = 100;
+                customFields.forEach(f => f.percentage = (f.percentage / customTotal) * 100);
+                customTotal = 100;
+            }
+            
+            const remaining = 100 - customTotal;
+            const autoPercentage = autoFields.length > 0 ? remaining / autoFields.length : 0;
+            
+            return fields.map(f => ({
+                ...f,
+                actualPercentage: f.percentage !== null ? f.percentage : autoPercentage
+            }));
+        }
+        
+        function drawWheel() {
+            const canvas = document.getElementById('wheel');
+            const ctx = canvas.getContext('2d');
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = canvas.width / 2 - 10;
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            const fieldsWithPercentages = calculatePercentages();
+            let startAngle = 0;
+            
+            fieldsWithPercentages.forEach((field, index) => {
+                const sliceAngle = (field.actualPercentage / 100) * 2 * Math.PI;
+                
+                ctx.beginPath();
+                ctx.fillStyle = field.color;
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, startAngle, startAngle + sliceAngle);
+                ctx.lineTo(centerX, centerY);
+                ctx.fill();
+                
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                ctx.save();
+                ctx.translate(centerX, centerY);
+                ctx.rotate(startAngle + sliceAngle / 2);
+                ctx.textAlign = 'center';
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 16px Arial';
+                ctx.fillText(field.text, radius / 2, 5);
+                ctx.restore();
+                
+                startAngle += sliceAngle;
+            });
+        }
+        
+        function renderFields() {
+            const fieldsList = document.getElementById('fieldsList');
+            fieldsList.innerHTML = '';
+            
+            fields.forEach((field, index) => {
+                const fieldItem = document.createElement('div');
+                fieldItem.className = 'field-item';
+                
+                const textInput = document.createElement('input');
+                textInput.type = 'text';
+                textInput.value = field.text;
+                textInput.placeholder = 'Field text';
+                textInput.addEventListener('input', (e) => {
+                    fields[index].text = e.target.value;
+                    drawWheel();
+                });
+                
+                const colorInput = document.createElement('input');
+                colorInput.type = 'color';
+                colorInput.value = field.color;
+                colorInput.addEventListener('input', (e) => {
+                    fields[index].color = e.target.value;
+                    drawWheel();
+                });
+                
+                const percentInput = document.createElement('input');
+                percentInput.type = 'number';
+                percentInput.min = '0';
+                percentInput.max = '100';
+                percentInput.placeholder = 'Auto';
+                percentInput.value = field.percentage !== null ? field.percentage : '';
+                percentInput.addEventListener('input', (e) => {
+                    fields[index].percentage = e.target.value ? parseFloat(e.target.value) : null;
+                    drawWheel();
+                });
+                
+                const removeBtn = document.createElement('button');
+                removeBtn.textContent = 'Remove';
+                removeBtn.addEventListener('click', () => {
+                    if (fields.length > 2) {
+                        fields.splice(index, 1);
+                        renderFields();
+                        drawWheel();
+                    } else {
+                        alert('Must have at least 2 fields');
+                    }
+                });
+                
+                fieldItem.appendChild(textInput);
+                fieldItem.appendChild(colorInput);
+                fieldItem.appendChild(percentInput);
+                fieldItem.appendChild(removeBtn);
+                fieldsList.appendChild(fieldItem);
+            });
+        }
+        
+        document.getElementById('addFieldBtn').addEventListener('click', () => {
+            const newColor = getNextColorForPalette();
+            
+            fields.push({
+                text: `Prize ${fields.length + 1}`,
+                color: newColor,
+                percentage: null
+            });
+            
+            renderFields();
+            drawWheel();
+        });
+        
+        document.getElementById('clearFieldsBtn').addEventListener('click', () => {
+            if (confirm('Are you sure you want to clear all fields? This will reset to 2 default fields.')) {
+                fields = [
+                    { text: 'Prize 1', color: getNextColorForPalette(), percentage: null },
+                    { text: 'Prize 2', color: getNextColorForPalette(), percentage: null }
+                ];
+                renderFields();
+                drawWheel();
+            }
+        });
+        
+        document.getElementById('spinBtn').addEventListener('click', () => {
+            if (isSpinning) return;
+            
+            isSpinning = true;
+            document.getElementById('spinBtn').disabled = true;
+            
+            const canvas = document.getElementById('wheel');
+            const spins = 5 + Math.random() * 5;
+            const extraDegrees = Math.random() * 360;
+            const totalRotation = spins * 360 + extraDegrees;
+            
+            currentRotation += totalRotation;
+            canvas.style.transform = `rotate(${currentRotation}deg)`;
+            
+            setTimeout(() => {
+                const normalizedRotation = currentRotation % 360;
+                const winningAngle = (360 - normalizedRotation + 90) % 360;
+                
+                const fieldsWithPercentages = calculatePercentages();
+                let accumulatedAngle = 0;
+                let winner = fieldsWithPercentages[0];
+                
+                for (let field of fieldsWithPercentages) {
+                    const sliceAngle = (field.actualPercentage / 100) * 360;
+                    if (winningAngle >= accumulatedAngle && winningAngle < accumulatedAngle + sliceAngle) {
+                        winner = field;
+                        break;
+                    }
+                    accumulatedAngle += sliceAngle;
+                }
+                
+                alert(`You won: ${winner.text}!`);
+                isSpinning = false;
+                document.getElementById('spinBtn').disabled = false;
+            }, 4000);
+        });
+        
+        // Export configuration
+        function exportConfig() {
+            const config = {
+                version: '1.0',
+                palette: currentPalette,
+                fields: fields.map(f => ({
+                    text: f.text,
+                    color: f.color,
+                    percentage: f.percentage
+                })),
+                timestamp: new Date().toISOString()
+            };
+            
+            const dataStr = JSON.stringify(config, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `wheel-config-${Date.now()}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            showStatus('Configuration exported successfully!', 'success');
+        }
+        
+        // Import configuration
+        function importConfig(file) {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    const config = JSON.parse(e.target.result);
+                    
+                    // Validate config
+                    if (!config.fields || !Array.isArray(config.fields)) {
+                        throw new Error('Invalid configuration file: missing fields array');
+                    }
+                    
+                    if (config.fields.length < 2) {
+                        throw new Error('Configuration must have at least 2 fields');
+                    }
+                    
+                    // Apply configuration
+                    fields = config.fields.map(f => ({
+                        text: f.text || 'Prize',
+                        color: f.color || '#FF6B6B',
+                        percentage: f.percentage !== undefined ? f.percentage : null
+                    }));
+                    
+                    // Set palette if valid
+                    if (config.palette && colorPalettes[config.palette]) {
+                        currentPalette = config.palette;
+                        const select = document.getElementById('paletteSelect');
+                        select.value = currentPalette;
+                        updatePalettePreview();
+                    }
+                    
+                    // Redraw everything
+                    renderFields();
+                    drawWheel();
+                    
+                    showStatus('Configuration imported successfully!', 'success');
+                } catch (error) {
+                    showStatus(`Error importing configuration: ${error.message}`, 'error');
+                    console.error('Import error:', error);
+                }
+            };
+            
+            reader.onerror = function() {
+                showStatus('Error reading file. Please try again.', 'error');
+            };
+            
+            reader.readAsText(file);
+        }
+        
+        // Show status message
+        function showStatus(message, type) {
+            const statusEl = document.getElementById('statusMessage');
+            statusEl.textContent = message;
+            statusEl.className = `status-message ${type}`;
+            
+            setTimeout(() => {
+                statusEl.className = 'status-message';
+            }, 5000);
+        }
+        
+        // Event listeners for import/export
+        document.getElementById('exportBtn').addEventListener('click', exportConfig);
+        
+        document.getElementById('importBtn').addEventListener('click', () => {
+            document.getElementById('fileInput').click();
+        });
+        
+        document.getElementById('fileInput').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                importConfig(file);
+            }
+            // Reset input so the same file can be selected again
+            e.target.value = '';
+        });
+        
+        // Initialize
+        renderPaletteSelector();
+        renderFields();
+        drawWheel();
+    </script>
+</body>
+</html>
