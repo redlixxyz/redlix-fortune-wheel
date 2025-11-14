@@ -969,31 +969,45 @@
             document.getElementById('spinBtn').disabled = true;
             
             const canvas = document.getElementById('wheel');
-            const spins = 5 + Math.random() * 5;
-            const extraDegrees = Math.random() * 360;
-            const totalRotation = spins * 360 + extraDegrees;
+            
+            // First, select a winner based on weighted percentages
+            const fieldsWithPercentages = calculatePercentages();
+            const random = Math.random() * 100;
+            let accumulatedPercentage = 0;
+            let winner = fieldsWithPercentages[0];
+            let winnerIndex = 0;
+            
+            for (let i = 0; i < fieldsWithPercentages.length; i++) {
+                accumulatedPercentage += fieldsWithPercentages[i].actualPercentage;
+                if (random <= accumulatedPercentage) {
+                    winner = fieldsWithPercentages[i];
+                    winnerIndex = i;
+                    break;
+                }
+            }
+            
+            // Calculate the angle of the winner segment
+            let winnerStartAngle = 0;
+            for (let i = 0; i < winnerIndex; i++) {
+                winnerStartAngle += (fieldsWithPercentages[i].actualPercentage / 100) * 360;
+            }
+            const winnerSliceAngle = (winner.actualPercentage / 100) * 360;
+            const winnerCenterAngle = winnerStartAngle + (winnerSliceAngle / 2);
+            
+            // Calculate rotation needed to align winner to the top (pointer at 0 degrees)
+            // The pointer points down into the wheel from the top
+            // We want the center of the winning segment to be at the top (0 degrees)
+            // Since the wheel rotates clockwise, we need to rotate to position the segment
+            const targetAngle = 360 - winnerCenterAngle;
+            
+            // Add multiple full spins for effect (5-8 full rotations)
+            const spins = 5 + Math.floor(Math.random() * 4);
+            const totalRotation = spins * 360 + targetAngle;
             
             currentRotation += totalRotation;
             canvas.style.transform = `rotate(${currentRotation}deg)`;
             
             setTimeout(() => {
-                const normalizedRotation = currentRotation % 360;
-                const winningAngle = (360 - normalizedRotation + 90) % 360;
-                
-                const fieldsWithPercentages = calculatePercentages();
-                let accumulatedAngle = 0;
-                let winner = fieldsWithPercentages[0];
-                
-                for (let field of fieldsWithPercentages) {
-                    const sliceAngle = (field.actualPercentage / 100) * 360;
-                    if (winningAngle >= accumulatedAngle && winningAngle < accumulatedAngle + sliceAngle) {
-                        winner = field;
-                        break;
-                    }
-                    accumulatedAngle += sliceAngle;
-                }
-                
-                alert(`You won: ${winner.text}!`);
                 isSpinning = false;
                 document.getElementById('spinBtn').disabled = false;
             }, 4000);
