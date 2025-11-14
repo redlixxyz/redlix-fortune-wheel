@@ -5,22 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fortune Wheel</title>
     <style>
-        :root {
+        /* Remove the problematic all: initial and all: revert rules */
+        .fortune-wheel-app {
             --primary-red: rgb(128, 26, 48);
             --dark-gray: rgb(38, 38, 38);
             --burgundy: rgb(49, 18, 26);
             --white: #ffffff;
             --light-gray: #f5f5f5;
             --border: #d0d0d0;
-        }
-        
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
-        body {
             background: var(--white);
             color: var(--dark-gray);
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
@@ -29,7 +21,11 @@
             line-height: 1.5;
         }
         
-        .wheel-container {
+        .fortune-wheel-app * {
+            box-sizing: border-box;
+        }
+        
+        .fortune-wheel-app .wheel-container {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -38,7 +34,7 @@
             margin: 0 auto;
         }
         
-        .header {
+        .fortune-wheel-app .header {
             background: var(--primary-red);
             padding: 1rem 2rem;
             border: 3px solid var(--dark-gray);
@@ -52,7 +48,7 @@
             margin-bottom: 1.5rem;
         }
         
-        .header h2 {
+        .fortune-wheel-app .header h2 {
             color: var(--white);
             font-size: 1rem;
             font-weight: 700;
@@ -61,7 +57,7 @@
             margin: 0;
         }
         
-        .header h2 {
+        .fortune-wheel-app .header h2 {
             color: var(--white);
             font-size: 1rem;
             font-weight: 700;
@@ -70,14 +66,14 @@
             margin: 0;
         }
         
-        .main-content {
+        .fortune-wheel-app .main-content {
             max-width: 1400px;
             margin: 0 auto;
             padding: 1.5rem;
             width: 100%;
         }
         
-        .wheel-section {
+        .fortune-wheel-app .wheel-section {
             background: var(--light-gray);
             border: 3px solid var(--dark-gray);
             padding: 2rem;
@@ -87,14 +83,14 @@
             align-items: center;
         }
         
-        .wheel-wrapper {
+        .fortune-wheel-app .wheel-wrapper {
             position: relative;
             width: 350px;
             height: 350px;
             margin-bottom: 1.5rem;
         }
         
-        #wheel {
+        .fortune-wheel-app #wheel {
             width: 100%;
             height: 100%;
             border-radius: 50%;
@@ -104,7 +100,7 @@
             box-shadow: 0 8px 16px rgba(0,0,0,0.2);
         }
         
-        .arrow {
+        .fortune-wheel-app .arrow {
             position: absolute;
             top: -25px;
             left: 50%;
@@ -118,7 +114,7 @@
             filter: drop-shadow(0 3px 6px rgba(0,0,0,0.3));
         }
         
-        #spinBtn {
+        .fortune-wheel-app #spinBtn {
             background: var(--primary-red);
             border: 3px solid var(--dark-gray);
             color: var(--white);
@@ -132,27 +128,27 @@
             font-family: 'Inter', sans-serif;
         }
         
-        #spinBtn:hover {
+        .fortune-wheel-app #spinBtn:hover {
             background: var(--burgundy);
         }
         
-        #spinBtn:active {
+        .fortune-wheel-app #spinBtn:active {
             transform: scale(0.95);
         }
         
-        #spinBtn:disabled {
+        .fortune-wheel-app #spinBtn:disabled {
             background: #95a5a6;
             cursor: not-allowed;
             transform: none;
         }
         
-        #spinBtn:disabled {
+        .fortune-wheel-app #spinBtn:disabled {
             background: #95a5a6;
             cursor: not-allowed;
             transform: none;
         }
         
-        .controls-wrapper {
+        .fortune-wheel-app .controls-wrapper {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1.5rem;
@@ -160,13 +156,13 @@
             max-width: 1400px;
         }
         
-        .control-section {
+        .fortune-wheel-app .control-section {
             background: var(--light-gray);
             border: 3px solid var(--dark-gray);
             padding: 1.25rem;
         }
         
-        .control-section h3 {
+        .fortune-wheel-app .control-section h3 {
             font-size: 1rem;
             font-weight: 700;
             color: var(--dark-gray);
@@ -180,7 +176,7 @@
             margin: 0 0 1rem 0;
         }
         
-        .control-section h3::before {
+        .fortune-wheel-app .control-section h3::before {
             content: '';
             display: block;
             width: 6px;
@@ -189,11 +185,11 @@
             border: 2px solid var(--dark-gray);
         }
         
-        .palette-selector {
+        .fortune-wheel-app .palette-selector {
             margin-bottom: 1rem;
         }
         
-        .palette-selector label {
+        .fortune-wheel-app .palette-selector label {
             display: block;
             margin-bottom: 0.5rem;
             color: var(--dark-gray);
@@ -203,7 +199,7 @@
             letter-spacing: 0.5px;
         }
         
-        #paletteSelect {
+        .fortune-wheel-app #paletteSelect {
             width: 100%;
             padding: 0.75rem;
             background: var(--white);
@@ -216,22 +212,22 @@
             transition: border-color 0.2s;
         }
         
-        #paletteSelect:hover {
+        .fortune-wheel-app #paletteSelect:hover {
             border-color: var(--primary-red);
         }
         
-        #paletteSelect:focus {
+        .fortune-wheel-app #paletteSelect:focus {
             outline: none;
             border-color: var(--primary-red);
         }
         
-        .palette-preview {
+        .fortune-wheel-app .palette-preview {
             display: flex;
             gap: 3px;
             margin-top: 0.75rem;
         }
         
-        .palette-color {
+        .fortune-wheel-app .palette-color {
             flex: 1;
             height: 30px;
             border: 2px solid var(--dark-gray);
@@ -239,46 +235,46 @@
             cursor: pointer;
         }
         
-        .palette-color:hover {
+        .fortune-wheel-app .palette-color:hover {
             transform: scale(1.05);
         }
         
-        .palette-color:hover {
+        .fortune-wheel-app .palette-color:hover {
             transform: scale(1.05);
         }
         
-        #fieldsList {
+        .fortune-wheel-app #fieldsList {
             max-height: 300px;
             overflow-y: auto;
             margin-bottom: 1rem;
         }
         
-        #fieldsList::-webkit-scrollbar {
+        .fortune-wheel-app #fieldsList::-webkit-scrollbar {
             width: 8px;
         }
         
-        #fieldsList::-webkit-scrollbar-track {
+        .fortune-wheel-app #fieldsList::-webkit-scrollbar-track {
             background: var(--white);
             border: 1px solid var(--dark-gray);
         }
         
-        #fieldsList::-webkit-scrollbar-thumb {
+        .fortune-wheel-app #fieldsList::-webkit-scrollbar-thumb {
             background: var(--primary-red);
             border: 1px solid var(--dark-gray);
         }
         
-        #fieldsList::-webkit-scrollbar-thumb:hover {
+        .fortune-wheel-app #fieldsList::-webkit-scrollbar-thumb:hover {
             background: var(--burgundy);
         }
         
-        .field-item {
+        .fortune-wheel-app .field-item {
             display: flex;
             gap: 0.5rem;
             margin-bottom: 0.5rem;
             align-items: center;
         }
         
-        .field-item input[type="text"] {
+        .fortune-wheel-app .field-item input[type="text"] {
             flex: 2;
             padding: 0.75rem;
             background: var(--white);
@@ -290,12 +286,12 @@
             transition: border-color 0.2s;
         }
         
-        .field-item input[type="text"]:focus {
+        .fortune-wheel-app .field-item input[type="text"]:focus {
             outline: none;
             border-color: var(--primary-red);
         }
         
-        .field-item input[type="color"] {
+        .fortune-wheel-app .field-item input[type="color"] {
             width: 50px;
             height: 42px;
             border: 3px solid var(--dark-gray);
@@ -304,11 +300,11 @@
             transition: transform 0.2s;
         }
         
-        .field-item input[type="color"]:hover {
+        .fortune-wheel-app .field-item input[type="color"]:hover {
             transform: scale(1.05);
         }
         
-        .field-item input[type="number"] {
+        .fortune-wheel-app .field-item input[type="number"] {
             width: 70px;
             padding: 0.75rem 0.5rem;
             background: var(--white);
@@ -321,12 +317,12 @@
             transition: border-color 0.2s;
         }
         
-        .field-item input[type="number"]:focus {
+        .fortune-wheel-app .field-item input[type="number"]:focus {
             outline: none;
             border-color: var(--primary-red);
         }
         
-        .field-item button {
+        .fortune-wheel-app .field-item button {
             background: var(--white);
             border: 3px solid var(--dark-gray);
             color: var(--dark-gray);
@@ -340,26 +336,26 @@
             font-family: 'Inter', sans-serif;
         }
         
-        .field-item button:hover {
+        .fortune-wheel-app .field-item button:hover {
             background: var(--primary-red);
             color: var(--white);
         }
         
-        .field-item button:active {
+        .fortune-wheel-app .field-item button:active {
             transform: scale(0.95);
         }
         
-        .field-item button:active {
+        .fortune-wheel-app .field-item button:active {
             transform: scale(0.95);
         }
         
-        .button-group {
+        .fortune-wheel-app .button-group {
             display: flex;
             gap: 0.5rem;
             flex-wrap: wrap;
         }
         
-        .button-group button {
+        .fortune-wheel-app .button-group button {
             flex: 1;
             background: var(--white);
             border: 3px solid var(--dark-gray);
@@ -375,37 +371,37 @@
             font-family: 'Inter', sans-serif;
         }
         
-        #addFieldBtn {
+        .fortune-wheel-app #addFieldBtn {
             background: var(--primary-red);
             color: var(--white);
         }
         
-        #addFieldBtn:hover {
+        .fortune-wheel-app #addFieldBtn:hover {
             background: var(--burgundy);
         }
         
-        #addFieldBtn:active {
+        .fortune-wheel-app #addFieldBtn:active {
             transform: scale(0.95);
         }
         
-        #clearFieldsBtn {
+        .fortune-wheel-app #clearFieldsBtn {
             background: var(--burgundy);
             color: var(--white);
         }
         
-        #clearFieldsBtn:hover {
+        .fortune-wheel-app #clearFieldsBtn:hover {
             background: var(--primary-red);
         }
         
-        #clearFieldsBtn:active {
+        .fortune-wheel-app #clearFieldsBtn:active {
             transform: scale(0.95);
         }
         
-        #clearFieldsBtn:active {
+        .fortune-wheel-app #clearFieldsBtn:active {
             transform: scale(0.95);
         }
         
-        .import-export-section {
+        .fortune-wheel-app .import-export-section {
             width: 100%;
             background: var(--light-gray);
             border: 3px solid var(--dark-gray);
@@ -413,7 +409,7 @@
             margin-bottom: 1.5rem;
         }
         
-        .import-export-section h3 {
+        .fortune-wheel-app .import-export-section h3 {
             font-size: 1rem;
             font-weight: 700;
             color: var(--dark-gray);
@@ -427,7 +423,7 @@
             margin: 0 0 1rem 0;
         }
         
-        .import-export-section h3::before {
+        .fortune-wheel-app .import-export-section h3::before {
             content: '';
             display: block;
             width: 6px;
@@ -436,13 +432,13 @@
             border: 2px solid var(--dark-gray);
         }
         
-        .import-export-buttons {
+        .fortune-wheel-app .import-export-buttons {
             display: flex;
             gap: 0.5rem;
             flex-wrap: wrap;
         }
         
-        .import-export-buttons button {
+        .fortune-wheel-app .import-export-buttons button {
             flex: 1;
             min-width: 150px;
             background: var(--white);
@@ -458,37 +454,37 @@
             font-family: 'Inter', sans-serif;
         }
         
-        #exportBtn {
+        .fortune-wheel-app #exportBtn {
             background: var(--primary-red);
             color: var(--white);
         }
         
-        #exportBtn:hover {
+        .fortune-wheel-app #exportBtn:hover {
             background: var(--burgundy);
         }
         
-        #exportBtn:active {
+        .fortune-wheel-app #exportBtn:active {
             transform: scale(0.95);
         }
         
-        #importBtn {
+        .fortune-wheel-app #importBtn {
             background: var(--burgundy);
             color: var(--white);
         }
         
-        #importBtn:hover {
+        .fortune-wheel-app #importBtn:hover {
             background: var(--primary-red);
         }
         
-        #importBtn:active {
+        .fortune-wheel-app #importBtn:active {
             transform: scale(0.95);
         }
         
-        #fileInput {
+        .fortune-wheel-app #fileInput {
             display: none;
         }
         
-        .status-message {
+        .fortune-wheel-app .status-message {
             margin-top: 1rem;
             padding: 0.75rem;
             font-weight: 700;
@@ -499,196 +495,196 @@
             display: none;
         }
         
-        .status-message.success {
+        .fortune-wheel-app .status-message.success {
             background: var(--primary-red);
             color: var(--white);
             display: block;
         }
         
-        .status-message.error {
+        .fortune-wheel-app .status-message.error {
             background: var(--burgundy);
             color: var(--white);
             display: block;
         }
         
-        .status-message.error {
+        .fortune-wheel-app .status-message.error {
             background: var(--burgundy);
             color: var(--white);
             display: block;
         }
         
-        .status-message.error {
+        .fortune-wheel-app .status-message.error {
             background: var(--burgundy);
             color: var(--white);
             display: block;
         }
         
         @media (max-width: 768px) {
-            .main-content {
+            .fortune-wheel-app .main-content {
                 padding: 0.75rem;
             }
             
-            .controls-wrapper {
+            .fortune-wheel-app .controls-wrapper {
                 grid-template-columns: 1fr;
                 gap: 1rem;
             }
             
-            .wheel-section {
+            .fortune-wheel-app .wheel-section {
                 padding: 1rem;
             }
             
-            .wheel-wrapper {
+            .fortune-wheel-app .wheel-wrapper {
                 width: 250px;
                 height: 250px;
             }
             
-            #wheel {
+            .fortune-wheel-app #wheel {
                 border-width: 4px;
             }
             
-            .arrow {
+            .fortune-wheel-app .arrow {
                 border-left: 12px solid transparent;
                 border-right: 12px solid transparent;
                 border-top: 24px solid var(--primary-red);
                 top: -20px;
             }
             
-            #spinBtn {
+            .fortune-wheel-app #spinBtn {
                 padding: 0.6rem 2rem;
                 font-size: 0.85rem;
             }
             
-            .control-section {
+            .fortune-wheel-app .control-section {
                 padding: 1rem;
             }
             
-            .control-section h3 {
+            .fortune-wheel-app .control-section h3 {
                 font-size: 0.9rem;
             }
             
-            .field-item {
+            .fortune-wheel-app .field-item {
                 flex-wrap: wrap;
             }
             
-            .field-item input[type="text"] {
+            .fortune-wheel-app .field-item input[type="text"] {
                 width: 100%;
                 flex: 1 1 100%;
                 margin-bottom: 0.5rem;
             }
             
-            .field-item input[type="color"] {
+            .fortune-wheel-app .field-item input[type="color"] {
                 width: 45px;
                 height: 38px;
             }
             
-            .field-item input[type="number"] {
+            .fortune-wheel-app .field-item input[type="number"] {
                 width: 60px;
             }
             
-            .field-item button {
+            .fortune-wheel-app .field-item button {
                 flex: 1;
             }
             
-            .button-group button {
+            .fortune-wheel-app .button-group button {
                 min-width: auto;
             }
             
-            .import-export-section {
+            .fortune-wheel-app .import-export-section {
                 padding: 1rem;
             }
             
-            .import-export-section h3 {
+            .fortune-wheel-app .import-export-section h3 {
                 font-size: 0.9rem;
             }
             
-            .import-export-buttons {
+            .fortune-wheel-app .import-export-buttons {
                 flex-direction: column;
             }
             
-            .import-export-buttons button {
+            .fortune-wheel-app .import-export-buttons button {
                 min-width: 100%;
             }
         }
         
         @media (max-width: 480px) {
-            .main-content {
+            .fortune-wheel-app .main-content {
                 padding: 0.5rem;
             }
             
-            .wheel-section {
+            .fortune-wheel-app .wheel-section {
                 padding: 0.75rem;
             }
             
-            .wheel-wrapper {
+            .fortune-wheel-app .wheel-wrapper {
                 width: 200px;
                 height: 200px;
             }
             
-            #wheel {
+            .fortune-wheel-app #wheel {
                 border-width: 3px;
             }
             
-            .arrow {
+            .fortune-wheel-app .arrow {
                 border-left: 10px solid transparent;
                 border-right: 10px solid transparent;
                 border-top: 20px solid var(--primary-red);
                 top: -18px;
             }
             
-            #spinBtn {
+            .fortune-wheel-app #spinBtn {
                 padding: 0.5rem 1.5rem;
                 font-size: 0.75rem;
                 letter-spacing: 1px;
             }
             
-            .control-section,
-            .import-export-section {
+            .fortune-wheel-app .control-section,
+            .fortune-wheel-app .import-export-section {
                 padding: 0.75rem;
             }
             
-            .control-section h3,
-            .import-export-section h3 {
+            .fortune-wheel-app .control-section h3,
+            .fortune-wheel-app .import-export-section h3 {
                 font-size: 0.85rem;
                 letter-spacing: 1px;
             }
             
-            .palette-selector label,
+            .fortune-wheel-app .palette-selector label,
             label {
                 font-size: 0.75rem;
             }
             
-            #paletteSelect,
-            .field-item input[type="text"],
-            .field-item input[type="number"] {
+            .fortune-wheel-app #paletteSelect,
+            .fortune-wheel-app .field-item input[type="text"],
+            .fortune-wheel-app .field-item input[type="number"] {
                 padding: 0.5rem;
                 font-size: 0.75rem;
             }
             
-            .field-item input[type="color"] {
+            .fortune-wheel-app .field-item input[type="color"] {
                 width: 40px;
                 height: 35px;
             }
             
-            .field-item input[type="number"] {
+            .fortune-wheel-app .field-item input[type="number"] {
                 width: 55px;
             }
             
-            .field-item button,
-            .button-group button,
-            .import-export-buttons button {
+            .fortune-wheel-app .field-item button,
+            .fortune-wheel-app .button-group button,
+            .fortune-wheel-app .import-export-buttons button {
                 padding: 0.4rem 0.75rem;
                 font-size: 0.7rem;
             }
             
-            .palette-preview {
+            .fortune-wheel-app .palette-preview {
                 gap: 2px;
             }
             
-            .palette-color {
+            .fortune-wheel-app .palette-color {
                 height: 24px;
             }
             
-            .status-message {
+            .fortune-wheel-app .status-message {
                 font-size: 0.75rem;
                 padding: 0.5rem;
             }
@@ -696,646 +692,663 @@
     </style>
 </head>
 <body>
-    <div class="wheel-container">
-        <div class="header">
-            <h2>🎡 Fortune Wheel</h2>
-        </div>
-        
-        <div class="main-content">
-            <div class="wheel-section">
-                <div class="wheel-wrapper">
-                    <div class="arrow"></div>
-                    <canvas id="wheel" width="400" height="400"></canvas>
-                </div>
-                
-                <button id="spinBtn">▶️ SPIN</button>
+    <div class="fortune-wheel-app">
+        <div class="wheel-container">
+            <div class="header">
+                <h2>🎡 Fortune Wheel</h2>
             </div>
             
-            <div class="controls-wrapper">
-                <div class="control-section">
-                    <h3>Color Palette</h3>
-                    <div class="palette-selector">
-                        <label for="paletteSelect">Choose Palette</label>
-                        <select id="paletteSelect"></select>
+            <div class="main-content">
+                <div class="wheel-section">
+                    <div class="wheel-wrapper">
+                        <div class="arrow"></div>
+                        <canvas id="wheel" width="400" height="400"></canvas>
                     </div>
-                    <div class="palette-preview" id="palettePreview"></div>
+                    
+                    <button id="spinBtn">▶️ SPIN</button>
                 </div>
                 
-                <div class="control-section">
-                    <h3>Wheel Fields</h3>
-                    <div id="fieldsList"></div>
-                    <div class="button-group">
-                        <button id="addFieldBtn">+ Add</button>
-                        <button id="clearFieldsBtn">Clear</button>
+                <div class="controls-wrapper">
+                    <div class="control-section">
+                        <h3>Color Palette</h3>
+                        <div class="palette-selector">
+                            <label for="paletteSelect">Choose Palette</label>
+                            <select id="paletteSelect"></select>
+                        </div>
+                        <div class="palette-preview" id="palettePreview"></div>
+                    </div>
+                    
+                    <div class="control-section">
+                        <h3>Wheel Fields</h3>
+                        <div id="fieldsList"></div>
+                        <div class="button-group">
+                            <button id="addFieldBtn">+ Add</button>
+                            <button id="clearFieldsBtn">Clear</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="import-export-section">
-                <h3>Import / Export Settings</h3>
-                <div class="import-export-buttons">
-                    <button id="exportBtn">📥 Export Configuration</button>
-                    <button id="importBtn">📤 Import Configuration</button>
-                    <input type="file" id="fileInput" accept=".json" />
+                
+                <div class="import-export-section">
+                    <h3>Import / Export Settings</h3>
+                    <div class="import-export-buttons">
+                        <button id="exportBtn">📥 Export Configuration</button>
+                        <button id="importBtn">📤 Import Configuration</button>
+                        <input type="file" id="fileInput" accept=".json" />
+                    </div>
+                    <div id="statusMessage" class="status-message"></div>
                 </div>
-                <div id="statusMessage" class="status-message"></div>
             </div>
         </div>
     </div>
 
     <script>
-        // Modern color palettes
-        const colorPalettes = {
-            'Sunset Vibes': ['#FF6B6B', '#FF8E53', '#FFA07A', '#FFB84D', '#FFC947'],
-            'Ocean Breeze': ['#0A4D68', '#088395', '#05BFDB', '#00FFCA', '#7DFFEA'],
-            'Forest Fresh': ['#1B4D3E', '#2D8B5F', '#3FA876', '#6FC77B', '#A8E6A1'],
-            'Candy Pop': ['#FF6FB5', '#FF8DC7', '#FFABDB', '#C77DFF', '#9D4EDD'],
-            'Neon Nights': ['#FF006E', '#FB5607', '#FFBE0B', '#8338EC', '#3A86FF'],
-            'Peachy Keen': ['#FFB5A7', '#FFC3A0', '#FFD1B0', '#FFDFB3', '#FFEDC2'],
-            'Berry Blast': ['#D62828', '#F77F00', '#FCBF49', '#EAE2B7', '#C9ADA7'],
-            'Tropical Dream': ['#06FFA5', '#00D4FF', '#B75CFF', '#FF6EC7', '#FFD100'],
-            'Retro Wave': ['#FF006E', '#8338EC', '#3A86FF', '#06FFA5', '#FFBE0B'],
-            'Cool Mint': ['#52B788', '#74C69D', '#95D5B2', '#B7E4C7', '#D8F3DC']
-        };
-        
-        let currentPalette = 'Sunset Vibes';
-        let fields = [
-            { text: 'Prize 1', color: '#FF6B6B', percentage: null },
-            { text: 'Prize 2', color: '#4ECDC4', percentage: null },
-            { text: 'Prize 3', color: '#45B7D1', percentage: null },
-            { text: 'Prize 4', color: '#FFA07A', percentage: null }
-        ];
-        
-        let isSpinning = false;
-        let currentRotation = 0;
-        
-        // Audio context and sound generation
-        let audioContext = null;
-        let spinningGainNode = null;
-        let melodyInterval = null;
-        let currentTempo = 1.0;
-        let spinStartTime = 0;
-        let spinDuration = 0;
-        
-        function initAudioContext() {
-            if (!audioContext) {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            return audioContext;
-        }
-        
-        function playClickSound() {
-            const ctx = initAudioContext();
+        (function() {
+            'use strict';
             
-            // Create a more satisfying button click with multiple frequencies
-            const frequencies = [200, 400, 600];
-            frequencies.forEach((freq, index) => {
-                const oscillator = ctx.createOscillator();
-                const gainNode = ctx.createGain();
+            // Wait for DOM to be fully loaded
+            function initFortuneWheel() {
+                // Modern color palettes
+                const colorPalettes = {
+                    'Sunset Vibes': ['#FF6B6B', '#FF8E53', '#FFA07A', '#FFB84D', '#FFC947'],
+                    'Ocean Breeze': ['#0A4D68', '#088395', '#05BFDB', '#00FFCA', '#7DFFEA'],
+                    'Forest Fresh': ['#1B4D3E', '#2D8B5F', '#3FA876', '#6FC77B', '#A8E6A1'],
+                    'Candy Pop': ['#FF6FB5', '#FF8DC7', '#FFABDB', '#C77DFF', '#9D4EDD'],
+                    'Neon Nights': ['#FF006E', '#FB5607', '#FFBE0B', '#8338EC', '#3A86FF'],
+                    'Peachy Keen': ['#FFB5A7', '#FFC3A0', '#FFD1B0', '#FFDFB3', '#FFEDC2'],
+                    'Berry Blast': ['#D62828', '#F77F00', '#FCBF49', '#EAE2B7', '#C9ADA7'],
+                    'Tropical Dream': ['#06FFA5', '#00D4FF', '#B75CFF', '#FF6EC7', '#FFD100'],
+                    'Retro Wave': ['#FF006E', '#8338EC', '#3A86FF', '#06FFA5', '#FFBE0B'],
+                    'Cool Mint': ['#52B788', '#74C69D', '#95D5B2', '#B7E4C7', '#D8F3DC']
+                };
                 
-                oscillator.connect(gainNode);
-                gainNode.connect(ctx.destination);
+                let currentPalette = 'Sunset Vibes';
+                let fields = [
+                    { text: 'Prize 1', color: '#FF6B6B', percentage: null },
+                    { text: 'Prize 2', color: '#4ECDC4', percentage: null },
+                    { text: 'Prize 3', color: '#45B7D1', percentage: null },
+                    { text: 'Prize 4', color: '#FFA07A', percentage: null }
+                ];
                 
-                oscillator.frequency.value = freq;
-                oscillator.type = 'sine';
+                let isSpinning = false;
+                let currentRotation = 0;
                 
-                const startTime = ctx.currentTime + (index * 0.01);
-                gainNode.gain.setValueAtTime(0.1, startTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + 0.08);
+                // Audio context and sound generation
+                let audioContext = null;
+                let spinningGainNode = null;
+                let melodyInterval = null;
+                let currentTempo = 1.0;
+                let spinStartTime = 0;
+                let spinDuration = 0;
                 
-                oscillator.start(startTime);
-                oscillator.stop(startTime + 0.08);
-            });
-        }
-        
-        function startSpinningSound(duration) {
-            const ctx = initAudioContext();
-            
-            spinStartTime = ctx.currentTime;
-            spinDuration = duration;
-            
-            spinningGainNode = ctx.createGain();
-            spinningGainNode.connect(ctx.destination);
-            
-            // Fade in
-            spinningGainNode.gain.setValueAtTime(0, ctx.currentTime);
-            spinningGainNode.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.3);
-            
-            // Melody notes: C-E-G-C (arpeggiated major chord)
-            const melodyNotes = [523.25, 659.25, 783.99, 1046.5];
-            let noteIndex = 0;
-            
-            // Function to play one note with dynamic timing
-            function playNote() {
-                if (!spinningGainNode) return;
-                
-                const ctx = audioContext;
-                const elapsed = ctx.currentTime - spinStartTime;
-                const progress = Math.min(elapsed / spinDuration, 1);
-                
-                // Calculate tempo based on easing curve (fast at start, slow at end)
-                // Using inverse of cubic-bezier-like curve
-                const tempoProgress = 1 - Math.pow(progress, 2.5);
-                currentTempo = 0.3 + (tempoProgress * 1.7); // Range: 0.3x to 2.0x speed
-                
-                // Calculate note duration based on tempo
-                const baseNoteDuration = 0.15;
-                const noteDuration = baseNoteDuration / currentTempo;
-                
-                const oscillator = ctx.createOscillator();
-                const noteGain = ctx.createGain();
-                const filter = ctx.createBiquadFilter();
-                
-                oscillator.connect(filter);
-                filter.connect(noteGain);
-                noteGain.connect(spinningGainNode);
-                
-                oscillator.type = 'triangle';
-                oscillator.frequency.value = melodyNotes[noteIndex];
-                
-                filter.type = 'lowpass';
-                filter.frequency.value = 2000;
-                filter.Q.value = 1;
-                
-                // Envelope for each note
-                const now = ctx.currentTime;
-                noteGain.gain.setValueAtTime(0, now);
-                noteGain.gain.linearRampToValueAtTime(0.8, now + 0.01);
-                noteGain.gain.linearRampToValueAtTime(0, now + noteDuration);
-                
-                oscillator.start(now);
-                oscillator.stop(now + noteDuration);
-                
-                // Move to next note
-                noteIndex = (noteIndex + 1) % melodyNotes.length;
-                
-                // Schedule next note with dynamic interval
-                if (progress < 1) {
-                    const nextInterval = noteDuration * 1000; // Convert to milliseconds
-                    melodyInterval = setTimeout(playNote, nextInterval);
-                }
-            }
-            
-            // Start the melody
-            playNote();
-        }
-        
-        function stopSpinningSound() {
-            if (spinningGainNode && audioContext) {
-                const ctx = audioContext;
-                const fadeOutTime = 0.5;
-                
-                // Fade out the melody
-                spinningGainNode.gain.linearRampToValueAtTime(0.01, ctx.currentTime + fadeOutTime);
-                
-                // Clear interval and clean up
-                if (melodyInterval) {
-                    clearTimeout(melodyInterval);
-                    melodyInterval = null;
+                function initAudioContext() {
+                    if (!audioContext) {
+                        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    }
+                    return audioContext;
                 }
                 
-                setTimeout(() => {
-                    spinningGainNode = null;
-                }, fadeOutTime * 1000 + 100);
-            }
-        }
-        
-        function playStopSound() {
-            const ctx = initAudioContext();
-            
-            // Create a satisfying "ding" sound when the wheel stops
-            const frequencies = [523.25, 659.25, 783.99]; // C, E, G chord
-            
-            frequencies.forEach((freq, index) => {
-                const oscillator = ctx.createOscillator();
-                const gainNode = ctx.createGain();
-                const filter = ctx.createBiquadFilter();
-                
-                oscillator.connect(filter);
-                filter.connect(gainNode);
-                gainNode.connect(ctx.destination);
-                
-                oscillator.type = 'sine';
-                oscillator.frequency.value = freq;
-                
-                filter.type = 'lowpass';
-                filter.frequency.value = 2000;
-                
-                const startTime = ctx.currentTime + (index * 0.05);
-                gainNode.gain.setValueAtTime(0.15, startTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + 0.8);
-                
-                oscillator.start(startTime);
-                oscillator.stop(startTime + 0.8);
-            });
-            
-            // Add a subtle bell-like overtone
-            const bellOsc = ctx.createOscillator();
-            const bellGain = ctx.createGain();
-            
-            bellOsc.connect(bellGain);
-            bellGain.connect(ctx.destination);
-            
-            bellOsc.type = 'sine';
-            bellOsc.frequency.value = 1046.5; // High C
-            
-            bellGain.gain.setValueAtTime(0.08, ctx.currentTime + 0.1);
-            bellGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
-            
-            bellOsc.start(ctx.currentTime + 0.1);
-            bellOsc.stop(ctx.currentTime + 0.6);
-        }
-        
-        function renderPaletteSelector() {
-            const select = document.getElementById('paletteSelect');
-            select.innerHTML = '';
-            
-            Object.keys(colorPalettes).forEach(paletteName => {
-                const option = document.createElement('option');
-                option.value = paletteName;
-                option.textContent = paletteName;
-                if (paletteName === currentPalette) {
-                    option.selected = true;
+                function playClickSound() {
+                    const ctx = initAudioContext();
+                    
+                    // Create a more satisfying button click with multiple frequencies
+                    const frequencies = [200, 400, 600];
+                    frequencies.forEach((freq, index) => {
+                        const oscillator = ctx.createOscillator();
+                        const gainNode = ctx.createGain();
+                        
+                        oscillator.connect(gainNode);
+                        gainNode.connect(ctx.destination);
+                        
+                        oscillator.frequency.value = freq;
+                        oscillator.type = 'sine';
+                        
+                        const startTime = ctx.currentTime + (index * 0.01);
+                        gainNode.gain.setValueAtTime(0.1, startTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + 0.08);
+                        
+                        oscillator.start(startTime);
+                        oscillator.stop(startTime + 0.08);
+                    });
                 }
-                select.appendChild(option);
-            });
-            
-            select.addEventListener('change', (e) => {
-                currentPalette = e.target.value;
-                applyPalette(currentPalette);
-                updatePalettePreview();
-            });
-            
-            updatePalettePreview();
-        }
-        
-        function updatePalettePreview() {
-            const preview = document.getElementById('palettePreview');
-            preview.innerHTML = '';
-            
-            const colors = colorPalettes[currentPalette];
-            colors.forEach(color => {
-                const colorBox = document.createElement('div');
-                colorBox.className = 'palette-color';
-                colorBox.style.backgroundColor = color;
-                colorBox.title = color;
-                preview.appendChild(colorBox);
-            });
-        }
-        
-        function applyPalette(paletteName) {
-            const colors = colorPalettes[paletteName];
-            
-            fields.forEach((field, index) => {
-                field.color = colors[index % colors.length];
-            });
-            
-            renderFields();
-            drawWheel();
-        }
-        
-        function getNextColorForPalette() {
-            const colors = colorPalettes[currentPalette];
-            return colors[fields.length % colors.length];
-        }
-        
-        function calculatePercentages() {
-            const customFields = fields.filter(f => f.percentage !== null);
-            const autoFields = fields.filter(f => f.percentage === null);
-            
-            let customTotal = customFields.reduce((sum, f) => sum + f.percentage, 0);
-            
-            if (customTotal > 100) {
-                customTotal = 100;
-                customFields.forEach(f => f.percentage = (f.percentage / customTotal) * 100);
-                customTotal = 100;
-            }
-            
-            const remaining = 100 - customTotal;
-            const autoPercentage = autoFields.length > 0 ? remaining / autoFields.length : 0;
-            
-            return fields.map(f => ({
-                ...f,
-                actualPercentage: f.percentage !== null ? f.percentage : autoPercentage
-            }));
-        }
-        
-        function drawWheel() {
-            const canvas = document.getElementById('wheel');
-            const ctx = canvas.getContext('2d');
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
-            const radius = canvas.width / 2 - 10;
-            
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            const fieldsWithPercentages = calculatePercentages();
-            let startAngle = 0;
-            
-            fieldsWithPercentages.forEach((field, index) => {
-                const sliceAngle = (field.actualPercentage / 100) * 2 * Math.PI;
                 
-                ctx.beginPath();
-                ctx.fillStyle = field.color;
-                ctx.moveTo(centerX, centerY);
-                ctx.arc(centerX, centerY, radius, startAngle, startAngle + sliceAngle);
-                ctx.lineTo(centerX, centerY);
-                ctx.fill();
+                function startSpinningSound(duration) {
+                    const ctx = initAudioContext();
+                    
+                    spinStartTime = ctx.currentTime;
+                    spinDuration = duration;
+                    
+                    spinningGainNode = ctx.createGain();
+                    spinningGainNode.connect(ctx.destination);
+                    
+                    // Fade in
+                    spinningGainNode.gain.setValueAtTime(0, ctx.currentTime);
+                    spinningGainNode.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.3);
+                    
+                    // Melody notes: C-E-G-C (arpeggiated major chord)
+                    const melodyNotes = [523.25, 659.25, 783.99, 1046.5];
+                    let noteIndex = 0;
+                    
+                    // Function to play one note with dynamic timing
+                    function playNote() {
+                        if (!spinningGainNode) return;
+                        
+                        const ctx = audioContext;
+                        const elapsed = ctx.currentTime - spinStartTime;
+                        const progress = Math.min(elapsed / spinDuration, 1);
+                        
+                        // Calculate tempo based on easing curve (fast at start, slow at end)
+                        // Using inverse of cubic-bezier-like curve
+                        const tempoProgress = 1 - Math.pow(progress, 2.5);
+                        currentTempo = 0.3 + (tempoProgress * 1.7); // Range: 0.3x to 2.0x speed
+                        
+                        // Calculate note duration based on tempo
+                        const baseNoteDuration = 0.15;
+                        const noteDuration = baseNoteDuration / currentTempo;
+                        
+                        const oscillator = ctx.createOscillator();
+                        const noteGain = ctx.createGain();
+                        const filter = ctx.createBiquadFilter();
+                        
+                        oscillator.connect(filter);
+                        filter.connect(noteGain);
+                        noteGain.connect(spinningGainNode);
+                        
+                        oscillator.type = 'triangle';
+                        oscillator.frequency.value = melodyNotes[noteIndex];
+                        
+                        filter.type = 'lowpass';
+                        filter.frequency.value = 2000;
+                        filter.Q.value = 1;
+                        
+                        // Envelope for each note
+                        const now = ctx.currentTime;
+                        noteGain.gain.setValueAtTime(0, now);
+                        noteGain.gain.linearRampToValueAtTime(0.8, now + 0.01);
+                        noteGain.gain.linearRampToValueAtTime(0, now + noteDuration);
+                        
+                        oscillator.start(now);
+                        oscillator.stop(now + noteDuration);
+                        
+                        // Move to next note
+                        noteIndex = (noteIndex + 1) % melodyNotes.length;
+                        
+                        // Schedule next note with dynamic interval
+                        if (progress < 1) {
+                            const nextInterval = noteDuration * 1000; // Convert to milliseconds
+                            melodyInterval = setTimeout(playNote, nextInterval);
+                        }
+                    }
+                    
+                    // Start the melody
+                    playNote();
+                }
                 
-                ctx.strokeStyle = '#fff';
-                ctx.lineWidth = 2;
-                ctx.stroke();
+                function stopSpinningSound() {
+                    if (spinningGainNode && audioContext) {
+                        const ctx = audioContext;
+                        const fadeOutTime = 0.5;
+                        
+                        // Fade out the melody
+                        spinningGainNode.gain.linearRampToValueAtTime(0.01, ctx.currentTime + fadeOutTime);
+                        
+                        // Clear interval and clean up
+                        if (melodyInterval) {
+                            clearTimeout(melodyInterval);
+                            melodyInterval = null;
+                        }
+                        
+                        setTimeout(() => {
+                            spinningGainNode = null;
+                        }, fadeOutTime * 1000 + 100);
+                    }
+                }
                 
-                ctx.save();
-                ctx.translate(centerX, centerY);
-                ctx.rotate(startAngle + sliceAngle / 2);
-                ctx.textAlign = 'center';
-                ctx.fillStyle = '#fff';
-                ctx.font = 'bold 16px Arial';
-                ctx.fillText(field.text, radius / 2, 5);
-                ctx.restore();
+                function playStopSound() {
+                    const ctx = initAudioContext();
+                    
+                    // Create a satisfying "ding" sound when the wheel stops
+                    const frequencies = [523.25, 659.25, 783.99]; // C, E, G chord
+                    
+                    frequencies.forEach((freq, index) => {
+                        const oscillator = ctx.createOscillator();
+                        const gainNode = ctx.createGain();
+                        const filter = ctx.createBiquadFilter();
+                        
+                        oscillator.connect(filter);
+                        filter.connect(gainNode);
+                        gainNode.connect(ctx.destination);
+                        
+                        oscillator.type = 'sine';
+                        oscillator.frequency.value = freq;
+                        
+                        filter.type = 'lowpass';
+                        filter.frequency.value = 2000;
+                        
+                        const startTime = ctx.currentTime + (index * 0.05);
+                        gainNode.gain.setValueAtTime(0.15, startTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + 0.8);
+                        
+                        oscillator.start(startTime);
+                        oscillator.stop(startTime + 0.8);
+                    });
+                    
+                    // Add a subtle bell-like overtone
+                    const bellOsc = ctx.createOscillator();
+                    const bellGain = ctx.createGain();
+                    
+                    bellOsc.connect(bellGain);
+                    bellGain.connect(ctx.destination);
+                    
+                    bellOsc.type = 'sine';
+                    bellOsc.frequency.value = 1046.5; // High C
+                    
+                    bellGain.gain.setValueAtTime(0.08, ctx.currentTime + 0.1);
+                    bellGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
+                    
+                    bellOsc.start(ctx.currentTime + 0.1);
+                    bellOsc.stop(ctx.currentTime + 0.6);
+                }
                 
-                startAngle += sliceAngle;
-            });
-        }
-        
-        function renderFields() {
-            const fieldsList = document.getElementById('fieldsList');
-            fieldsList.innerHTML = '';
-            
-            fields.forEach((field, index) => {
-                const fieldItem = document.createElement('div');
-                fieldItem.className = 'field-item';
+                function renderPaletteSelector() {
+                    const select = document.getElementById('paletteSelect');
+                    select.innerHTML = '';
+                    
+                    Object.keys(colorPalettes).forEach(paletteName => {
+                        const option = document.createElement('option');
+                        option.value = paletteName;
+                        option.textContent = paletteName;
+                        if (paletteName === currentPalette) {
+                            option.selected = true;
+                        }
+                        select.appendChild(option);
+                    });
+                    
+                    select.addEventListener('change', (e) => {
+                        currentPalette = e.target.value;
+                        applyPalette(currentPalette);
+                        updatePalettePreview();
+                    });
+                    
+                    updatePalettePreview();
+                }
                 
-                const textInput = document.createElement('input');
-                textInput.type = 'text';
-                textInput.value = field.text;
-                textInput.placeholder = 'Field text';
-                textInput.addEventListener('input', (e) => {
-                    fields[index].text = e.target.value;
+                function updatePalettePreview() {
+                    const preview = document.getElementById('palettePreview');
+                    preview.innerHTML = '';
+                    
+                    const colors = colorPalettes[currentPalette];
+                    colors.forEach(color => {
+                        const colorBox = document.createElement('div');
+                        colorBox.className = 'palette-color';
+                        colorBox.style.backgroundColor = color;
+                        colorBox.title = color;
+                        preview.appendChild(colorBox);
+                    });
+                }
+                
+                function applyPalette(paletteName) {
+                    const colors = colorPalettes[paletteName];
+                    
+                    fields.forEach((field, index) => {
+                        field.color = colors[index % colors.length];
+                    });
+                    
+                    renderFields();
+                    drawWheel();
+                }
+                
+                function getNextColorForPalette() {
+                    const colors = colorPalettes[currentPalette];
+                    return colors[fields.length % colors.length];
+                }
+                
+                function calculatePercentages() {
+                    const customFields = fields.filter(f => f.percentage !== null);
+                    const autoFields = fields.filter(f => f.percentage === null);
+                    
+                    let customTotal = customFields.reduce((sum, f) => sum + f.percentage, 0);
+                    
+                    if (customTotal > 100) {
+                        customTotal = 100;
+                        customFields.forEach(f => f.percentage = (f.percentage / customTotal) * 100);
+                        customTotal = 100;
+                    }
+                    
+                    const remaining = 100 - customTotal;
+                    const autoPercentage = autoFields.length > 0 ? remaining / autoFields.length : 0;
+                    
+                    return fields.map(f => ({
+                        ...f,
+                        actualPercentage: f.percentage !== null ? f.percentage : autoPercentage
+                    }));
+                }
+                
+                function drawWheel() {
+                    const canvas = document.getElementById('wheel');
+                    const ctx = canvas.getContext('2d');
+                    const centerX = canvas.width / 2;
+                    const centerY = canvas.height / 2;
+                    const radius = canvas.width / 2 - 10;
+                    
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    
+                    const fieldsWithPercentages = calculatePercentages();
+                    let startAngle = 0;
+                    
+                    fieldsWithPercentages.forEach((field, index) => {
+                        const sliceAngle = (field.actualPercentage / 100) * 2 * Math.PI;
+                        
+                        ctx.beginPath();
+                        ctx.fillStyle = field.color;
+                        ctx.moveTo(centerX, centerY);
+                        ctx.arc(centerX, centerY, radius, startAngle, startAngle + sliceAngle);
+                        ctx.lineTo(centerX, centerY);
+                        ctx.fill();
+                        
+                        ctx.strokeStyle = '#fff';
+                        ctx.lineWidth = 2;
+                        ctx.stroke();
+                        
+                        ctx.save();
+                        ctx.translate(centerX, centerY);
+                        ctx.rotate(startAngle + sliceAngle / 2);
+                        ctx.textAlign = 'center';
+                        ctx.fillStyle = '#fff';
+                        ctx.font = 'bold 16px Arial';
+                        ctx.fillText(field.text, radius / 2, 5);
+                        ctx.restore();
+                        
+                        startAngle += sliceAngle;
+                    });
+                }
+                
+                function renderFields() {
+                    const fieldsList = document.getElementById('fieldsList');
+                    fieldsList.innerHTML = '';
+                    
+                    fields.forEach((field, index) => {
+                        const fieldItem = document.createElement('div');
+                        fieldItem.className = 'field-item';
+                        
+                        const textInput = document.createElement('input');
+                        textInput.type = 'text';
+                        textInput.value = field.text;
+                        textInput.placeholder = 'Field text';
+                        textInput.addEventListener('input', (e) => {
+                            fields[index].text = e.target.value;
+                            drawWheel();
+                        });
+                        
+                        const colorInput = document.createElement('input');
+                        colorInput.type = 'color';
+                        colorInput.value = field.color;
+                        colorInput.addEventListener('input', (e) => {
+                            fields[index].color = e.target.value;
+                            drawWheel();
+                        });
+                        
+                        const percentInput = document.createElement('input');
+                        percentInput.type = 'number';
+                        percentInput.min = '0';
+                        percentInput.max = '100';
+                        percentInput.placeholder = 'Auto';
+                        percentInput.value = field.percentage !== null ? field.percentage : '';
+                        percentInput.addEventListener('input', (e) => {
+                            fields[index].percentage = e.target.value ? parseFloat(e.target.value) : null;
+                            drawWheel();
+                        });
+                        
+                        const removeBtn = document.createElement('button');
+                        removeBtn.textContent = 'Remove';
+                        removeBtn.addEventListener('click', () => {
+                            if (fields.length > 2) {
+                                fields.splice(index, 1);
+                                renderFields();
+                                drawWheel();
+                            } else {
+                                alert('Must have at least 2 fields');
+                            }
+                        });
+                        
+                        fieldItem.appendChild(textInput);
+                        fieldItem.appendChild(colorInput);
+                        fieldItem.appendChild(percentInput);
+                        fieldItem.appendChild(removeBtn);
+                        fieldsList.appendChild(fieldItem);
+                    });
+                }
+                
+                document.getElementById('addFieldBtn').addEventListener('click', () => {
+                    const newColor = getNextColorForPalette();
+                    
+                    fields.push({
+                        text: `Prize ${fields.length + 1}`,
+                        color: newColor,
+                        percentage: null
+                    });
+                    
+                    renderFields();
                     drawWheel();
                 });
                 
-                const colorInput = document.createElement('input');
-                colorInput.type = 'color';
-                colorInput.value = field.color;
-                colorInput.addEventListener('input', (e) => {
-                    fields[index].color = e.target.value;
-                    drawWheel();
-                });
-                
-                const percentInput = document.createElement('input');
-                percentInput.type = 'number';
-                percentInput.min = '0';
-                percentInput.max = '100';
-                percentInput.placeholder = 'Auto';
-                percentInput.value = field.percentage !== null ? field.percentage : '';
-                percentInput.addEventListener('input', (e) => {
-                    fields[index].percentage = e.target.value ? parseFloat(e.target.value) : null;
-                    drawWheel();
-                });
-                
-                const removeBtn = document.createElement('button');
-                removeBtn.textContent = 'Remove';
-                removeBtn.addEventListener('click', () => {
-                    if (fields.length > 2) {
-                        fields.splice(index, 1);
+                document.getElementById('clearFieldsBtn').addEventListener('click', () => {
+                    if (confirm('Are you sure you want to clear all fields? This will reset to 2 default fields.')) {
+                        fields = [
+                            { text: 'Prize 1', color: getNextColorForPalette(), percentage: null },
+                            { text: 'Prize 2', color: getNextColorForPalette(), percentage: null }
+                        ];
                         renderFields();
                         drawWheel();
-                    } else {
-                        alert('Must have at least 2 fields');
                     }
                 });
                 
-                fieldItem.appendChild(textInput);
-                fieldItem.appendChild(colorInput);
-                fieldItem.appendChild(percentInput);
-                fieldItem.appendChild(removeBtn);
-                fieldsList.appendChild(fieldItem);
-            });
-        }
-        
-        document.getElementById('addFieldBtn').addEventListener('click', () => {
-            const newColor = getNextColorForPalette();
-            
-            fields.push({
-                text: `Prize ${fields.length + 1}`,
-                color: newColor,
-                percentage: null
-            });
-            
-            renderFields();
-            drawWheel();
-        });
-        
-        document.getElementById('clearFieldsBtn').addEventListener('click', () => {
-            if (confirm('Are you sure you want to clear all fields? This will reset to 2 default fields.')) {
-                fields = [
-                    { text: 'Prize 1', color: getNextColorForPalette(), percentage: null },
-                    { text: 'Prize 2', color: getNextColorForPalette(), percentage: null }
-                ];
+                document.getElementById('spinBtn').addEventListener('click', () => {
+                    if (isSpinning) return;
+                    
+                    // Play click sound when button is pressed
+                    playClickSound();
+                    
+                    isSpinning = true;
+                    document.getElementById('spinBtn').disabled = true;
+                    
+                    const canvas = document.getElementById('wheel');
+                    
+                    // First, select a winner based on weighted percentages
+                    const fieldsWithPercentages = calculatePercentages();
+                    const random = Math.random() * 100;
+                    let accumulatedPercentage = 0;
+                    let winner = fieldsWithPercentages[0];
+                    let winnerIndex = 0;
+                    
+                    for (let i = 0; i < fieldsWithPercentages.length; i++) {
+                        accumulatedPercentage += fieldsWithPercentages[i].actualPercentage;
+                        if (random <= accumulatedPercentage) {
+                            winner = fieldsWithPercentages[i];
+                            winnerIndex = i;
+                            break;
+                        }
+                    }
+                    
+                    // Calculate the angle of the winner segment
+                    let winnerStartAngle = 0;
+                    for (let i = 0; i < winnerIndex; i++) {
+                        winnerStartAngle += (fieldsWithPercentages[i].actualPercentage / 100) * 360;
+                    }
+                    const winnerSliceAngle = (winner.actualPercentage / 100) * 360;
+                    
+                    // Add significant randomness within the winning segment
+                    const randomOffsetInSegment = (Math.random() - 0.5) * winnerSliceAngle * 0.9;
+                    const winnerCenterAngle = winnerStartAngle + (winnerSliceAngle / 2) + randomOffsetInSegment;
+                    
+                    // Calculate rotation needed to align winner to the top (pointer at 0 degrees)
+                    const targetAngle = 360 - winnerCenterAngle;
+                    
+                    // Significantly increased spin variation (3-15 full rotations)
+                    const spins = 3 + Math.floor(Math.random() * 13);
+                    
+                    // Always spin in positive direction (clockwise)
+                    const totalRotation = Math.abs(spins * 360 + targetAngle);
+                    
+                    // Reset to 0 and spin forward to avoid any backwards motion
+                    canvas.style.transition = 'none';
+                    canvas.style.transform = 'rotate(0deg)';
+                    currentRotation = 0;
+                    
+                    // Force reflow to apply the reset
+                    canvas.offsetHeight;
+                    
+                    // Expanded speed variation (2.5s to 6s) for more dramatic differences
+                    const duration = 2.5 + Math.random() * 3.5;
+                    
+                    // More varied easing curves for different spin feels
+                    const easingCurves = [
+                        'cubic-bezier(0.17, 0.67, 0.12, 0.99)',
+                        'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                        'cubic-bezier(0.33, 0.64, 0.20, 1.00)',
+                        'cubic-bezier(0.22, 0.61, 0.36, 1.00)'
+                    ];
+                    const randomEasing = easingCurves[Math.floor(Math.random() * easingCurves.length)];
+                    
+                    canvas.style.transition = `transform ${duration}s ${randomEasing}`;
+                    canvas.style.transform = `rotate(${totalRotation}deg)`;
+                    currentRotation = totalRotation;
+                    
+                    // Start spinning sound with duration parameter
+                    startSpinningSound(duration);
+                    
+                    setTimeout(() => {
+                        // Stop spinning sound
+                        stopSpinningSound();
+                        
+                        // Play stop sound when wheel stops
+                        setTimeout(() => {
+                            playStopSound();
+                        }, 100);
+                        
+                        isSpinning = false;
+                        document.getElementById('spinBtn').disabled = false;
+                    }, duration * 1000);
+                });
+                
+                // Export configuration
+                function exportConfig() {
+                    const config = {
+                        version: '1.0',
+                        palette: currentPalette,
+                        fields: fields.map(f => ({
+                            text: f.text,
+                            color: f.color,
+                            percentage: f.percentage
+                        })),
+                        timestamp: new Date().toISOString()
+                    };
+                    
+                    const dataStr = JSON.stringify(config, null, 2);
+                    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                    const url = URL.createObjectURL(dataBlob);
+                    
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = `wheel-config-${Date.now()}.json`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                    
+                    showStatus('Configuration exported successfully!', 'success');
+                }
+                
+                // Import configuration
+                function importConfig(file) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        try {
+                            const config = JSON.parse(e.target.result);
+                            
+                            // Validate config
+                            if (!config.fields || !Array.isArray(config.fields)) {
+                                throw new Error('Invalid configuration file: missing fields array');
+                            }
+                            
+                            if (config.fields.length < 2) {
+                                throw new Error('Configuration must have at least 2 fields');
+                            }
+                            
+                            // Apply configuration
+                            fields = config.fields.map(f => ({
+                                text: f.text || 'Prize',
+                                color: f.color || '#FF6B6B',
+                                percentage: f.percentage !== undefined ? f.percentage : null
+                            }));
+                            
+                            // Set palette if valid
+                            if (config.palette && colorPalettes[config.palette]) {
+                                currentPalette = config.palette;
+                                const select = document.getElementById('paletteSelect');
+                                select.value = currentPalette;
+                                updatePalettePreview();
+                            }
+                            
+                            // Redraw everything
+                            renderFields();
+                            drawWheel();
+                            
+                            showStatus('Configuration imported successfully!', 'success');
+                        } catch (error) {
+                            showStatus(`Error importing configuration: ${error.message}`, 'error');
+                            console.error('Import error:', error);
+                        }
+                    };
+                    
+                    reader.onerror = function() {
+                        showStatus('Error reading file. Please try again.', 'error');
+                    };
+                    
+                    reader.readAsText(file);
+                }
+                
+                // Show status message
+                function showStatus(message, type) {
+                    const statusEl = document.getElementById('statusMessage');
+                    statusEl.textContent = message;
+                    statusEl.className = `status-message ${type}`;
+                    
+                    setTimeout(() => {
+                        statusEl.className = 'status-message';
+                    }, 5000);
+                }
+                
+                // Event listeners for import/export
+                document.getElementById('exportBtn').addEventListener('click', exportConfig);
+                
+                document.getElementById('importBtn').addEventListener('click', () => {
+                    document.getElementById('fileInput').click();
+                });
+                
+                document.getElementById('fileInput').addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        importConfig(file);
+                    }
+                    // Reset input so the same file can be selected again
+                    e.target.value = '';
+                });
+                
+                // Initialize
+                renderPaletteSelector();
                 renderFields();
                 drawWheel();
             }
-        });
-        
-        document.getElementById('spinBtn').addEventListener('click', () => {
-            if (isSpinning) return;
             
-            // Play click sound when button is pressed
-            playClickSound();
-            
-            isSpinning = true;
-            document.getElementById('spinBtn').disabled = true;
-            
-            const canvas = document.getElementById('wheel');
-            
-            // First, select a winner based on weighted percentages
-            const fieldsWithPercentages = calculatePercentages();
-            const random = Math.random() * 100;
-            let accumulatedPercentage = 0;
-            let winner = fieldsWithPercentages[0];
-            let winnerIndex = 0;
-            
-            for (let i = 0; i < fieldsWithPercentages.length; i++) {
-                accumulatedPercentage += fieldsWithPercentages[i].actualPercentage;
-                if (random <= accumulatedPercentage) {
-                    winner = fieldsWithPercentages[i];
-                    winnerIndex = i;
-                    break;
-                }
+            // Check if DOM is already loaded
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initFortuneWheel);
+            } else {
+                // DOM is already loaded
+                initFortuneWheel();
             }
-            
-            // Calculate the angle of the winner segment
-            let winnerStartAngle = 0;
-            for (let i = 0; i < winnerIndex; i++) {
-                winnerStartAngle += (fieldsWithPercentages[i].actualPercentage / 100) * 360;
-            }
-            const winnerSliceAngle = (winner.actualPercentage / 100) * 360;
-            
-            // Add significant randomness within the winning segment
-            const randomOffsetInSegment = (Math.random() - 0.5) * winnerSliceAngle * 0.9;
-            const winnerCenterAngle = winnerStartAngle + (winnerSliceAngle / 2) + randomOffsetInSegment;
-            
-            // Calculate rotation needed to align winner to the top (pointer at 0 degrees)
-            const targetAngle = 360 - winnerCenterAngle;
-            
-            // Significantly increased spin variation (3-15 full rotations)
-            const spins = 3 + Math.floor(Math.random() * 13);
-            
-            // Always spin in positive direction (clockwise)
-            const totalRotation = Math.abs(spins * 360 + targetAngle);
-            
-            // Reset to 0 and spin forward to avoid any backwards motion
-            canvas.style.transition = 'none';
-            canvas.style.transform = 'rotate(0deg)';
-            currentRotation = 0;
-            
-            // Force reflow to apply the reset
-            canvas.offsetHeight;
-            
-            // Expanded speed variation (2.5s to 6s) for more dramatic differences
-            const duration = 2.5 + Math.random() * 3.5;
-            
-            // More varied easing curves for different spin feels
-            const easingCurves = [
-                'cubic-bezier(0.17, 0.67, 0.12, 0.99)',
-                'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                'cubic-bezier(0.33, 0.64, 0.20, 1.00)',
-                'cubic-bezier(0.22, 0.61, 0.36, 1.00)'
-            ];
-            const randomEasing = easingCurves[Math.floor(Math.random() * easingCurves.length)];
-            
-            canvas.style.transition = `transform ${duration}s ${randomEasing}`;
-            canvas.style.transform = `rotate(${totalRotation}deg)`;
-            currentRotation = totalRotation;
-            
-            // Start spinning sound with duration parameter
-            startSpinningSound(duration);
-            
-            setTimeout(() => {
-                // Stop spinning sound
-                stopSpinningSound();
-                
-                // Play stop sound when wheel stops
-                setTimeout(() => {
-                    playStopSound();
-                }, 100);
-                
-                isSpinning = false;
-                document.getElementById('spinBtn').disabled = false;
-            }, duration * 1000);
-        });
-        
-        // Export configuration
-        function exportConfig() {
-            const config = {
-                version: '1.0',
-                palette: currentPalette,
-                fields: fields.map(f => ({
-                    text: f.text,
-                    color: f.color,
-                    percentage: f.percentage
-                })),
-                timestamp: new Date().toISOString()
-            };
-            
-            const dataStr = JSON.stringify(config, null, 2);
-            const dataBlob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(dataBlob);
-            
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `wheel-config-${Date.now()}.json`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-            
-            showStatus('Configuration exported successfully!', 'success');
-        }
-        
-        // Import configuration
-        function importConfig(file) {
-            const reader = new FileReader();
-            
-            reader.onload = function(e) {
-                try {
-                    const config = JSON.parse(e.target.result);
-                    
-                    // Validate config
-                    if (!config.fields || !Array.isArray(config.fields)) {
-                        throw new Error('Invalid configuration file: missing fields array');
-                    }
-                    
-                    if (config.fields.length < 2) {
-                        throw new Error('Configuration must have at least 2 fields');
-                    }
-                    
-                    // Apply configuration
-                    fields = config.fields.map(f => ({
-                        text: f.text || 'Prize',
-                        color: f.color || '#FF6B6B',
-                        percentage: f.percentage !== undefined ? f.percentage : null
-                    }));
-                    
-                    // Set palette if valid
-                    if (config.palette && colorPalettes[config.palette]) {
-                        currentPalette = config.palette;
-                        const select = document.getElementById('paletteSelect');
-                        select.value = currentPalette;
-                        updatePalettePreview();
-                    }
-                    
-                    // Redraw everything
-                    renderFields();
-                    drawWheel();
-                    
-                    showStatus('Configuration imported successfully!', 'success');
-                } catch (error) {
-                    showStatus(`Error importing configuration: ${error.message}`, 'error');
-                    console.error('Import error:', error);
-                }
-            };
-            
-            reader.onerror = function() {
-                showStatus('Error reading file. Please try again.', 'error');
-            };
-            
-            reader.readAsText(file);
-        }
-        
-        // Show status message
-        function showStatus(message, type) {
-            const statusEl = document.getElementById('statusMessage');
-            statusEl.textContent = message;
-            statusEl.className = `status-message ${type}`;
-            
-            setTimeout(() => {
-                statusEl.className = 'status-message';
-            }, 5000);
-        }
-        
-        // Event listeners for import/export
-        document.getElementById('exportBtn').addEventListener('click', exportConfig);
-        
-        document.getElementById('importBtn').addEventListener('click', () => {
-            document.getElementById('fileInput').click();
-        });
-        
-        document.getElementById('fileInput').addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                importConfig(file);
-            }
-            // Reset input so the same file can be selected again
-            e.target.value = '';
-        });
-        
-        // Initialize
-        renderPaletteSelector();
-        renderFields();
-        drawWheel();
+        })();
     </script>
 </body>
 </html>
