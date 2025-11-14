@@ -769,6 +769,183 @@
         let isSpinning = false;
         let currentRotation = 0;
         
+        // Audio context and sound generation
+        let audioContext = null;
+        let spinningGainNode = null;
+        let melodyInterval = null;
+        let currentTempo = 1.0;
+        let spinStartTime = 0;
+        let spinDuration = 0;
+        
+        function initAudioContext() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            return audioContext;
+        }
+        
+        function playClickSound() {
+            const ctx = initAudioContext();
+            
+            // Create a more satisfying button click with multiple frequencies
+            const frequencies = [200, 400, 600];
+            frequencies.forEach((freq, index) => {
+                const oscillator = ctx.createOscillator();
+                const gainNode = ctx.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(ctx.destination);
+                
+                oscillator.frequency.value = freq;
+                oscillator.type = 'sine';
+                
+                const startTime = ctx.currentTime + (index * 0.01);
+                gainNode.gain.setValueAtTime(0.1, startTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + 0.08);
+                
+                oscillator.start(startTime);
+                oscillator.stop(startTime + 0.08);
+            });
+        }
+        
+        function startSpinningSound(duration) {
+            const ctx = initAudioContext();
+            
+            spinStartTime = ctx.currentTime;
+            spinDuration = duration;
+            
+            spinningGainNode = ctx.createGain();
+            spinningGainNode.connect(ctx.destination);
+            
+            // Fade in
+            spinningGainNode.gain.setValueAtTime(0, ctx.currentTime);
+            spinningGainNode.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.3);
+            
+            // Melody notes: C-E-G-C (arpeggiated major chord)
+            const melodyNotes = [523.25, 659.25, 783.99, 1046.5];
+            let noteIndex = 0;
+            
+            // Function to play one note with dynamic timing
+            function playNote() {
+                if (!spinningGainNode) return;
+                
+                const ctx = audioContext;
+                const elapsed = ctx.currentTime - spinStartTime;
+                const progress = Math.min(elapsed / spinDuration, 1);
+                
+                // Calculate tempo based on easing curve (fast at start, slow at end)
+                // Using inverse of cubic-bezier-like curve
+                const tempoProgress = 1 - Math.pow(progress, 2.5);
+                currentTempo = 0.3 + (tempoProgress * 1.7); // Range: 0.3x to 2.0x speed
+                
+                // Calculate note duration based on tempo
+                const baseNoteDuration = 0.15;
+                const noteDuration = baseNoteDuration / currentTempo;
+                
+                const oscillator = ctx.createOscillator();
+                const noteGain = ctx.createGain();
+                const filter = ctx.createBiquadFilter();
+                
+                oscillator.connect(filter);
+                filter.connect(noteGain);
+                noteGain.connect(spinningGainNode);
+                
+                oscillator.type = 'triangle';
+                oscillator.frequency.value = melodyNotes[noteIndex];
+                
+                filter.type = 'lowpass';
+                filter.frequency.value = 2000;
+                filter.Q.value = 1;
+                
+                // Envelope for each note
+                const now = ctx.currentTime;
+                noteGain.gain.setValueAtTime(0, now);
+                noteGain.gain.linearRampToValueAtTime(0.8, now + 0.01);
+                noteGain.gain.linearRampToValueAtTime(0, now + noteDuration);
+                
+                oscillator.start(now);
+                oscillator.stop(now + noteDuration);
+                
+                // Move to next note
+                noteIndex = (noteIndex + 1) % melodyNotes.length;
+                
+                // Schedule next note with dynamic interval
+                if (progress < 1) {
+                    const nextInterval = noteDuration * 1000; // Convert to milliseconds
+                    melodyInterval = setTimeout(playNote, nextInterval);
+                }
+            }
+            
+            // Start the melody
+            playNote();
+        }
+        
+        function stopSpinningSound() {
+            if (spinningGainNode && audioContext) {
+                const ctx = audioContext;
+                const fadeOutTime = 0.5;
+                
+                // Fade out the melody
+                spinningGainNode.gain.linearRampToValueAtTime(0.01, ctx.currentTime + fadeOutTime);
+                
+                // Clear interval and clean up
+                if (melodyInterval) {
+                    clearTimeout(melodyInterval);
+                    melodyInterval = null;
+                }
+                
+                setTimeout(() => {
+                    spinningGainNode = null;
+                }, fadeOutTime * 1000 + 100);
+            }
+        }
+        
+        function playStopSound() {
+            const ctx = initAudioContext();
+            
+            // Create a satisfying "ding" sound when the wheel stops
+            const frequencies = [523.25, 659.25, 783.99]; // C, E, G chord
+            
+            frequencies.forEach((freq, index) => {
+                const oscillator = ctx.createOscillator();
+                const gainNode = ctx.createGain();
+                const filter = ctx.createBiquadFilter();
+                
+                oscillator.connect(filter);
+                filter.connect(gainNode);
+                gainNode.connect(ctx.destination);
+                
+                oscillator.type = 'sine';
+                oscillator.frequency.value = freq;
+                
+                filter.type = 'lowpass';
+                filter.frequency.value = 2000;
+                
+                const startTime = ctx.currentTime + (index * 0.05);
+                gainNode.gain.setValueAtTime(0.15, startTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + 0.8);
+                
+                oscillator.start(startTime);
+                oscillator.stop(startTime + 0.8);
+            });
+            
+            // Add a subtle bell-like overtone
+            const bellOsc = ctx.createOscillator();
+            const bellGain = ctx.createGain();
+            
+            bellOsc.connect(bellGain);
+            bellGain.connect(ctx.destination);
+            
+            bellOsc.type = 'sine';
+            bellOsc.frequency.value = 1046.5; // High C
+            
+            bellGain.gain.setValueAtTime(0.08, ctx.currentTime + 0.1);
+            bellGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
+            
+            bellOsc.start(ctx.currentTime + 0.1);
+            bellOsc.stop(ctx.currentTime + 0.6);
+        }
+        
         function renderPaletteSelector() {
             const select = document.getElementById('paletteSelect');
             select.innerHTML = '';
@@ -965,6 +1142,9 @@
         document.getElementById('spinBtn').addEventListener('click', () => {
             if (isSpinning) return;
             
+            // Play click sound when button is pressed
+            playClickSound();
+            
             isSpinning = true;
             document.getElementById('spinBtn').disabled = true;
             
@@ -992,25 +1172,59 @@
                 winnerStartAngle += (fieldsWithPercentages[i].actualPercentage / 100) * 360;
             }
             const winnerSliceAngle = (winner.actualPercentage / 100) * 360;
-            const winnerCenterAngle = winnerStartAngle + (winnerSliceAngle / 2);
+            
+            // Add significant randomness within the winning segment
+            const randomOffsetInSegment = (Math.random() - 0.5) * winnerSliceAngle * 0.9;
+            const winnerCenterAngle = winnerStartAngle + (winnerSliceAngle / 2) + randomOffsetInSegment;
             
             // Calculate rotation needed to align winner to the top (pointer at 0 degrees)
-            // The pointer points down into the wheel from the top
-            // We want the center of the winning segment to be at the top (0 degrees)
-            // Since the wheel rotates clockwise, we need to rotate to position the segment
             const targetAngle = 360 - winnerCenterAngle;
             
-            // Add multiple full spins for effect (5-8 full rotations)
-            const spins = 5 + Math.floor(Math.random() * 4);
-            const totalRotation = spins * 360 + targetAngle;
+            // Significantly increased spin variation (3-15 full rotations)
+            const spins = 3 + Math.floor(Math.random() * 13);
             
-            currentRotation += totalRotation;
-            canvas.style.transform = `rotate(${currentRotation}deg)`;
+            // Always spin in positive direction (clockwise)
+            const totalRotation = Math.abs(spins * 360 + targetAngle);
+            
+            // Reset to 0 and spin forward to avoid any backwards motion
+            canvas.style.transition = 'none';
+            canvas.style.transform = 'rotate(0deg)';
+            currentRotation = 0;
+            
+            // Force reflow to apply the reset
+            canvas.offsetHeight;
+            
+            // Expanded speed variation (2.5s to 6s) for more dramatic differences
+            const duration = 2.5 + Math.random() * 3.5;
+            
+            // More varied easing curves for different spin feels
+            const easingCurves = [
+                'cubic-bezier(0.17, 0.67, 0.12, 0.99)',
+                'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                'cubic-bezier(0.33, 0.64, 0.20, 1.00)',
+                'cubic-bezier(0.22, 0.61, 0.36, 1.00)'
+            ];
+            const randomEasing = easingCurves[Math.floor(Math.random() * easingCurves.length)];
+            
+            canvas.style.transition = `transform ${duration}s ${randomEasing}`;
+            canvas.style.transform = `rotate(${totalRotation}deg)`;
+            currentRotation = totalRotation;
+            
+            // Start spinning sound with duration parameter
+            startSpinningSound(duration);
             
             setTimeout(() => {
+                // Stop spinning sound
+                stopSpinningSound();
+                
+                // Play stop sound when wheel stops
+                setTimeout(() => {
+                    playStopSound();
+                }, 100);
+                
                 isSpinning = false;
                 document.getElementById('spinBtn').disabled = false;
-            }, 4000);
+            }, duration * 1000);
         });
         
         // Export configuration
