@@ -3,770 +3,810 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fortune Wheel</title>
+    <title>Fortune Wheel // Redlix Corp</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        /* Remove the problematic all: initial and all: revert rules */
-        .fortune-wheel-app {
-            --primary-red: rgb(128, 26, 48);
-            --dark-gray: rgb(38, 38, 38);
-            --burgundy: rgb(49, 18, 26);
-            --white: #ffffff;
-            --light-gray: #f5f5f5;
-            --border: #d0d0d0;
-            background: var(--white);
-            color: var(--dark-gray);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            min-height: 100vh;
-            padding: 0;
+        :root {
+            /* Retro-Futuristic Palette */
+            --rlx-red: #C23A2B;
+            --rlx-ember: #D4793A;
+            --rlx-cream: #E8DCC4;
+            --rlx-charcoal: #1A1918;
+            --rlx-brown: #3D3229;
+            --rlx-teal: #2D6B6B;
+            --rlx-gold: #B8954F;
+            --rlx-paper: #F4EDE1;
+            --rlx-ink: #2C2824;
+            
+            --font-head: "Space Grotesk", system-ui, sans-serif;
+            --font-body: "Inter", system-ui, sans-serif;
+            
+            --radius: 4px;
+            --border-width: 2px;
+            
+            --noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+        }
+        
+        * { box-sizing: border-box; }
+        
+        body {
+            margin: 0;
+            font-family: var(--font-body);
+            background: var(--rlx-cream);
+            background-image: var(--noise);
+            color: var(--rlx-ink);
             line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
         }
         
-        .fortune-wheel-app * {
-            box-sizing: border-box;
-        }
-        
-        .fortune-wheel-app .wheel-container {
+        .fortune-wheel-app {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            padding: 0;
-            max-width: 100%;
-            margin: 0 auto;
+            gap: 2rem;
         }
         
-        .fortune-wheel-app .header {
-            background: var(--primary-red);
-            padding: 1rem 2rem;
-            border: 3px solid var(--dark-gray);
-            border-left: none;
-            border-right: none;
-            border-top: none;
+        /* Header: Classified Document Style */
+        .app-header {
+            background: var(--rlx-brown);
+            color: var(--rlx-cream);
+            padding: 0;
+            border: var(--border-width) solid var(--rlx-charcoal);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .app-header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 8px;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--rlx-red) 0px,
+                var(--rlx-red) 30px,
+                var(--rlx-charcoal) 30px,
+                var(--rlx-charcoal) 32px
+            );
+        }
+        
+        .app-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 8px;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--rlx-red) 0px,
+                var(--rlx-red) 30px,
+                var(--rlx-charcoal) 30px,
+                var(--rlx-charcoal) 32px
+            );
+        }
+        
+        .header-inner {
+            padding: 2.5rem 2rem;
+            position: relative;
+        }
+        
+        .stamp {
+            position: absolute;
+            top: 1.5rem;
+            right: 2rem;
+            width: 80px;
+            height: 80px;
+            border: 3px solid var(--rlx-red);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 100%;
-            margin-bottom: 1.5rem;
+            transform: rotate(12deg);
+            opacity: 0.85;
         }
         
-        .fortune-wheel-app .header h2 {
-            color: var(--white);
-            font-size: 1rem;
-            font-weight: 700;
+        .stamp-inner {
+            width: 62px;
+            height: 62px;
+            border: 2px solid var(--rlx-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-head);
+            font-size: 0.5rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 0.1em;
+            text-align: center;
+            line-height: 1.3;
+            color: var(--rlx-red);
+        }
+        
+        .hero-meta {
+            font-family: var(--font-head);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            opacity: 0.7;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .hero-meta::before,
+        .hero-meta::after {
+            content: '◆';
+            font-size: 0.5rem;
+        }
+        
+        .hero-title {
+            font-family: var(--font-head);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            text-transform: uppercase;
+            line-height: 0.95;
+            margin: 0 0 1rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            max-width: 70%;
+        }
+        
+        .hero-desc {
+            max-width: 45ch;
+            font-size: 0.95rem;
+            opacity: 0.8;
+            border-left: 3px solid var(--rlx-gold);
+            padding-left: 1rem;
             margin: 0;
         }
         
-        .fortune-wheel-app .header h2 {
-            color: var(--white);
-            font-size: 1rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin: 0;
+        /* Section styling */
+        .section {
+            background: var(--rlx-paper);
+            padding: 0;
+            border: var(--border-width) solid var(--rlx-charcoal);
+            position: relative;
         }
         
-        .fortune-wheel-app .main-content {
-            max-width: 1400px;
-            margin: 0 auto;
+        .section-header {
+            background: var(--rlx-charcoal);
+            color: var(--rlx-cream);
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .section-header h2 {
+            font-family: var(--font-head);
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            letter-spacing: 0.1em;
+        }
+        
+        .section-num {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--rlx-gold);
+            line-height: 1;
+        }
+        
+        .section-code {
+            font-size: 0.65rem;
+            opacity: 0.6;
+            letter-spacing: 0.15em;
+            font-family: var(--font-head);
+        }
+        
+        .section-content {
             padding: 1.5rem;
-            width: 100%;
         }
         
-        .fortune-wheel-app .wheel-section {
-            background: var(--light-gray);
-            border: 3px solid var(--dark-gray);
-            padding: 2rem;
-            margin-bottom: 1.5rem;
+        /* Wheel Section */
+        .wheel-section .section-content {
             display: flex;
             flex-direction: column;
             align-items: center;
+            padding: 2rem;
         }
         
-        .fortune-wheel-app .wheel-wrapper {
+        .wheel-wrapper {
             position: relative;
-            width: 350px;
-            height: 350px;
+            width: 320px;
+            height: 320px;
             margin-bottom: 1.5rem;
         }
         
-        .fortune-wheel-app #wheel {
+        #wheel {
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            border: 6px solid var(--dark-gray);
+            border: 4px solid var(--rlx-charcoal);
             position: relative;
             transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            box-shadow: 
+                0 0 0 6px var(--rlx-brown),
+                0 8px 20px rgba(0,0,0,0.25);
         }
         
-        .fortune-wheel-app .arrow {
+        .arrow {
             position: absolute;
-            top: -25px;
+            top: -22px;
             left: 50%;
             transform: translateX(-50%);
             width: 0;
             height: 0;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-top: 30px solid var(--primary-red);
+            border-left: 14px solid transparent;
+            border-right: 14px solid transparent;
+            border-top: 28px solid var(--rlx-red);
             z-index: 10;
-            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.3));
+            filter: drop-shadow(0 3px 4px rgba(0,0,0,0.3));
         }
         
-        .fortune-wheel-app #spinBtn {
-            background: var(--primary-red);
-            border: 3px solid var(--dark-gray);
-            color: var(--white);
-            padding: 0.75rem 3rem;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            transition: all 0.15s;
-            font-family: 'Inter', sans-serif;
-        }
-        
-        .fortune-wheel-app #spinBtn:hover {
-            background: var(--burgundy);
-        }
-        
-        .fortune-wheel-app #spinBtn:active {
-            transform: scale(0.95);
-        }
-        
-        .fortune-wheel-app #spinBtn:disabled {
-            background: #95a5a6;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .fortune-wheel-app #spinBtn:disabled {
-            background: #95a5a6;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .fortune-wheel-app .controls-wrapper {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            width: 100%;
-            max-width: 1400px;
-        }
-        
-        .fortune-wheel-app .control-section {
-            background: var(--light-gray);
-            border: 3px solid var(--dark-gray);
-            padding: 1.25rem;
-        }
-        
-        .fortune-wheel-app .control-section h3 {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--dark-gray);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 2px solid var(--dark-gray);
-            margin: 0 0 1rem 0;
-        }
-        
-        .fortune-wheel-app .control-section h3::before {
+        .arrow::after {
             content: '';
-            display: block;
-            width: 6px;
-            height: 6px;
-            background: var(--primary-red);
-            border: 2px solid var(--dark-gray);
+            position: absolute;
+            top: -28px;
+            left: -10px;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 20px solid var(--rlx-ember);
         }
         
-        .fortune-wheel-app .palette-selector {
-            margin-bottom: 1rem;
+        /* Buttons */
+        button {
+            font-family: var(--font-head);
+            font-weight: 700;
+            font-size: 0.8rem;
+            border: var(--border-width) solid var(--rlx-charcoal);
+            padding: 0.9rem 1.8rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            letter-spacing: 0.1em;
+            transition: all 0.15s ease;
+            position: relative;
+            overflow: hidden;
         }
         
-        .fortune-wheel-app .palette-selector label {
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+        }
+        
+        button:hover {
+            transform: translateY(-1px);
+        }
+        
+        button:active {
+            transform: translateY(1px);
+        }
+        
+        .btn-primary {
+            background: var(--rlx-red);
+            color: var(--rlx-cream);
+            box-shadow: 0 4px 0 #8B2820;
+        }
+        .btn-primary:hover { box-shadow: 0 5px 0 #8B2820; }
+        .btn-primary:active { box-shadow: 0 2px 0 #8B2820; }
+        
+        .btn-secondary {
+            background: var(--rlx-teal);
+            color: var(--rlx-cream);
+            box-shadow: 0 4px 0 #1E4A4A;
+        }
+        .btn-secondary:hover { box-shadow: 0 5px 0 #1E4A4A; }
+        .btn-secondary:active { box-shadow: 0 2px 0 #1E4A4A; }
+        
+        .btn-ghost {
+            background: var(--rlx-paper);
+            color: var(--rlx-charcoal);
+            box-shadow: 0 4px 0 var(--rlx-brown);
+        }
+        .btn-ghost:hover { box-shadow: 0 5px 0 var(--rlx-brown); }
+        .btn-ghost:active { box-shadow: 0 2px 0 var(--rlx-brown); }
+        
+        .btn-danger {
+            background: var(--rlx-brown);
+            color: var(--rlx-cream);
+            box-shadow: 0 4px 0 var(--rlx-charcoal);
+        }
+        .btn-danger:hover { box-shadow: 0 5px 0 var(--rlx-charcoal); }
+        .btn-danger:active { box-shadow: 0 2px 0 var(--rlx-charcoal); }
+        
+        #spinBtn {
+            padding: 1rem 3rem;
+            font-size: 0.9rem;
+        }
+        
+        #spinBtn:disabled {
+            background: #6B6B6B;
+            box-shadow: 0 4px 0 #4A4A4A;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* Grid System */
+        .grid {
+            display: grid;
+            gap: 2rem;
+        }
+        
+        @media (min-width: 700px) {
+            .grid-2 { grid-template-columns: 1fr 1fr; }
+        }
+        
+        /* Controls */
+        .control-label {
             display: block;
             margin-bottom: 0.5rem;
-            color: var(--dark-gray);
-            font-weight: 600;
-            font-size: 0.85rem;
+            font-family: var(--font-head);
+            font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.1em;
+            color: var(--rlx-brown);
         }
         
-        .fortune-wheel-app #paletteSelect {
+        select, input[type="text"], input[type="number"] {
             width: 100%;
             padding: 0.75rem;
-            background: var(--white);
-            border: 3px solid var(--dark-gray);
-            color: var(--dark-gray);
+            background: var(--rlx-cream);
+            border: var(--border-width) solid var(--rlx-charcoal);
+            color: var(--rlx-ink);
             font-size: 0.85rem;
-            font-weight: 500;
-            font-family: 'Inter', sans-serif;
-            cursor: pointer;
-            transition: border-color 0.2s;
+            font-family: var(--font-body);
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
         
-        .fortune-wheel-app #paletteSelect:hover {
-            border-color: var(--primary-red);
+        select:hover, input[type="text"]:hover, input[type="number"]:hover {
+            border-color: var(--rlx-brown);
         }
         
-        .fortune-wheel-app #paletteSelect:focus {
+        select:focus, input[type="text"]:focus, input[type="number"]:focus {
             outline: none;
-            border-color: var(--primary-red);
+            border-color: var(--rlx-teal);
+            box-shadow: 0 0 0 3px rgba(45, 107, 107, 0.2);
         }
         
-        .fortune-wheel-app .palette-preview {
+        input[type="color"] {
+            width: 50px;
+            height: 42px;
+            border: var(--border-width) solid var(--rlx-charcoal);
+            background: var(--rlx-cream);
+            cursor: pointer;
+            padding: 2px;
+        }
+        
+        input[type="color"]:hover {
+            border-color: var(--rlx-teal);
+        }
+        
+        /* Palette Preview */
+        .palette-preview {
             display: flex;
-            gap: 3px;
-            margin-top: 0.75rem;
+            gap: 2px;
+            margin-top: 1rem;
         }
         
-        .fortune-wheel-app .palette-color {
+        .palette-color {
             flex: 1;
-            height: 30px;
-            border: 2px solid var(--dark-gray);
+            height: 36px;
+            border: 2px solid var(--rlx-charcoal);
             transition: transform 0.2s;
             cursor: pointer;
         }
         
-        .fortune-wheel-app .palette-color:hover {
+        .palette-color:hover {
             transform: scale(1.05);
+            z-index: 1;
         }
         
-        .fortune-wheel-app .palette-color:hover {
-            transform: scale(1.05);
-        }
-        
-        .fortune-wheel-app #fieldsList {
-            max-height: 300px;
+        /* Fields List */
+        #fieldsList {
+            max-height: 280px;
             overflow-y: auto;
             margin-bottom: 1rem;
+            border: 1px solid var(--rlx-brown);
+            background: var(--rlx-cream);
+            padding: 0.75rem;
         }
         
-        .fortune-wheel-app #fieldsList::-webkit-scrollbar {
+        #fieldsList::-webkit-scrollbar {
             width: 8px;
         }
         
-        .fortune-wheel-app #fieldsList::-webkit-scrollbar-track {
-            background: var(--white);
-            border: 1px solid var(--dark-gray);
+        #fieldsList::-webkit-scrollbar-track {
+            background: var(--rlx-cream);
+            border-left: 1px solid var(--rlx-brown);
         }
         
-        .fortune-wheel-app #fieldsList::-webkit-scrollbar-thumb {
-            background: var(--primary-red);
-            border: 1px solid var(--dark-gray);
+        #fieldsList::-webkit-scrollbar-thumb {
+            background: var(--rlx-teal);
+            border: 1px solid var(--rlx-charcoal);
         }
         
-        .fortune-wheel-app #fieldsList::-webkit-scrollbar-thumb:hover {
-            background: var(--burgundy);
+        #fieldsList::-webkit-scrollbar-thumb:hover {
+            background: var(--rlx-red);
         }
         
-        .fortune-wheel-app .field-item {
+        .field-item {
             display: flex;
             gap: 0.5rem;
             margin-bottom: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px dashed var(--rlx-brown);
             align-items: center;
         }
         
-        .fortune-wheel-app .field-item input[type="text"] {
+        .field-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .field-item input[type="text"] {
             flex: 2;
-            padding: 0.75rem;
-            background: var(--white);
-            border: 3px solid var(--dark-gray);
-            color: var(--dark-gray);
-            font-size: 0.85rem;
-            font-weight: 500;
-            font-family: 'Inter', sans-serif;
-            transition: border-color 0.2s;
+            padding: 0.6rem;
         }
         
-        .fortune-wheel-app .field-item input[type="text"]:focus {
-            outline: none;
-            border-color: var(--primary-red);
-        }
-        
-        .fortune-wheel-app .field-item input[type="color"] {
-            width: 50px;
-            height: 42px;
-            border: 3px solid var(--dark-gray);
-            background: var(--white);
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        
-        .fortune-wheel-app .field-item input[type="color"]:hover {
-            transform: scale(1.05);
-        }
-        
-        .fortune-wheel-app .field-item input[type="number"] {
+        .field-item input[type="number"] {
             width: 70px;
-            padding: 0.75rem 0.5rem;
-            background: var(--white);
-            border: 3px solid var(--dark-gray);
-            color: var(--dark-gray);
-            font-size: 0.85rem;
-            font-weight: 500;
+            padding: 0.6rem 0.4rem;
             text-align: center;
-            font-family: 'Inter', sans-serif;
-            transition: border-color 0.2s;
         }
         
-        .fortune-wheel-app .field-item input[type="number"]:focus {
-            outline: none;
-            border-color: var(--primary-red);
+        .field-item input[type="color"] {
+            width: 42px;
+            height: 38px;
         }
         
-        .fortune-wheel-app .field-item button {
-            background: var(--white);
-            border: 3px solid var(--dark-gray);
-            color: var(--dark-gray);
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: all 0.15s;
-            font-family: 'Inter', sans-serif;
+        .field-item button {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.7rem;
         }
         
-        .fortune-wheel-app .field-item button:hover {
-            background: var(--primary-red);
-            color: var(--white);
-        }
-        
-        .fortune-wheel-app .field-item button:active {
-            transform: scale(0.95);
-        }
-        
-        .fortune-wheel-app .field-item button:active {
-            transform: scale(0.95);
-        }
-        
-        .fortune-wheel-app .button-group {
+        /* Button Group */
+        .btn-group {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.75rem;
             flex-wrap: wrap;
         }
         
-        .fortune-wheel-app .button-group button {
+        .btn-group button {
             flex: 1;
-            background: var(--white);
-            border: 3px solid var(--dark-gray);
-            color: var(--dark-gray);
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: all 0.15s;
             min-width: 100px;
-            font-family: 'Inter', sans-serif;
         }
         
-        .fortune-wheel-app #addFieldBtn {
-            background: var(--primary-red);
-            color: var(--white);
-        }
-        
-        .fortune-wheel-app #addFieldBtn:hover {
-            background: var(--burgundy);
-        }
-        
-        .fortune-wheel-app #addFieldBtn:active {
-            transform: scale(0.95);
-        }
-        
-        .fortune-wheel-app #clearFieldsBtn {
-            background: var(--burgundy);
-            color: var(--white);
-        }
-        
-        .fortune-wheel-app #clearFieldsBtn:hover {
-            background: var(--primary-red);
-        }
-        
-        .fortune-wheel-app #clearFieldsBtn:active {
-            transform: scale(0.95);
-        }
-        
-        .fortune-wheel-app #clearFieldsBtn:active {
-            transform: scale(0.95);
-        }
-        
-        .fortune-wheel-app .import-export-section {
-            width: 100%;
-            background: var(--light-gray);
-            border: 3px solid var(--dark-gray);
-            padding: 1.25rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .fortune-wheel-app .import-export-section h3 {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--dark-gray);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
+        /* Divider */
+        .divider {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 2px solid var(--dark-gray);
-            margin: 0 0 1rem 0;
+            gap: 1rem;
+            margin: 1.25rem 0;
+            color: var(--rlx-brown);
         }
         
-        .fortune-wheel-app .import-export-section h3::before {
+        .divider::before,
+        .divider::after {
             content: '';
-            display: block;
-            width: 6px;
-            height: 6px;
-            background: var(--primary-red);
-            border: 2px solid var(--dark-gray);
+            flex: 1;
+            height: 1px;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--rlx-brown) 0px,
+                var(--rlx-brown) 4px,
+                transparent 4px,
+                transparent 8px
+            );
         }
         
-        .fortune-wheel-app .import-export-buttons {
+        .divider span {
+            font-family: var(--font-head);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+        
+        /* Import/Export Section */
+        .import-export-buttons {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.75rem;
             flex-wrap: wrap;
         }
         
-        .fortune-wheel-app .import-export-buttons button {
+        .import-export-buttons button {
             flex: 1;
-            min-width: 150px;
-            background: var(--white);
-            border: 3px solid var(--dark-gray);
-            color: var(--dark-gray);
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: all 0.15s;
-            font-family: 'Inter', sans-serif;
+            min-width: 180px;
         }
         
-        .fortune-wheel-app #exportBtn {
-            background: var(--primary-red);
-            color: var(--white);
-        }
-        
-        .fortune-wheel-app #exportBtn:hover {
-            background: var(--burgundy);
-        }
-        
-        .fortune-wheel-app #exportBtn:active {
-            transform: scale(0.95);
-        }
-        
-        .fortune-wheel-app #importBtn {
-            background: var(--burgundy);
-            color: var(--white);
-        }
-        
-        .fortune-wheel-app #importBtn:hover {
-            background: var(--primary-red);
-        }
-        
-        .fortune-wheel-app #importBtn:active {
-            transform: scale(0.95);
-        }
-        
-        .fortune-wheel-app #fileInput {
+        #fileInput {
             display: none;
         }
         
-        .fortune-wheel-app .status-message {
+        /* Status Message */
+        .status-message {
             margin-top: 1rem;
-            padding: 0.75rem;
+            padding: 0.75rem 1rem;
+            font-family: var(--font-head);
             font-weight: 700;
-            border: 3px solid var(--dark-gray);
+            border: var(--border-width) solid var(--rlx-charcoal);
             text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.85rem;
+            letter-spacing: 0.08em;
+            font-size: 0.8rem;
             display: none;
+            position: relative;
         }
         
-        .fortune-wheel-app .status-message.success {
-            background: var(--primary-red);
-            color: var(--white);
+        .status-message::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+        }
+        
+        .status-message.success {
+            background: var(--rlx-cream);
+            color: var(--rlx-teal);
             display: block;
         }
         
-        .fortune-wheel-app .status-message.error {
-            background: var(--burgundy);
-            color: var(--white);
+        .status-message.success::before {
+            background: var(--rlx-teal);
+        }
+        
+        .status-message.error {
+            background: var(--rlx-cream);
+            color: var(--rlx-red);
             display: block;
         }
         
-        .fortune-wheel-app .status-message.error {
-            background: var(--burgundy);
-            color: var(--white);
-            display: block;
+        .status-message.error::before {
+            background: var(--rlx-red);
         }
         
-        .fortune-wheel-app .status-message.error {
-            background: var(--burgundy);
-            color: var(--white);
-            display: block;
+        /* Footer */
+        .app-footer {
+            text-align: center;
+            font-family: var(--font-head);
+            font-size: 0.7rem;
+            color: var(--rlx-brown);
+            padding: 1.5rem 0;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            border-top: 1px solid var(--rlx-brown);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
         }
         
+        .app-footer::before {
+            content: '◆ ◆ ◆';
+            letter-spacing: 0.5em;
+            opacity: 0.5;
+        }
+        
+        /* Responsive */
         @media (max-width: 768px) {
-            .fortune-wheel-app .main-content {
-                padding: 0.75rem;
+            .fortune-wheel-app {
+                padding: 1rem;
+                gap: 1.5rem;
             }
             
-            .fortune-wheel-app .controls-wrapper {
-                grid-template-columns: 1fr;
-                gap: 1rem;
+            .header-inner {
+                padding: 2rem 1.5rem;
             }
             
-            .fortune-wheel-app .wheel-section {
+            .hero-title {
+                max-width: 85%;
+            }
+            
+            .stamp {
+                width: 60px;
+                height: 60px;
+                top: 1rem;
+                right: 1rem;
+            }
+            
+            .stamp-inner {
+                width: 48px;
+                height: 48px;
+                font-size: 0.4rem;
+            }
+            
+            .wheel-wrapper {
+                width: 260px;
+                height: 260px;
+            }
+            
+            .section-content {
                 padding: 1rem;
             }
             
-            .fortune-wheel-app .wheel-wrapper {
-                width: 250px;
-                height: 250px;
+            .grid {
+                gap: 1.5rem;
             }
             
-            .fortune-wheel-app #wheel {
-                border-width: 4px;
-            }
-            
-            .fortune-wheel-app .arrow {
-                border-left: 12px solid transparent;
-                border-right: 12px solid transparent;
-                border-top: 24px solid var(--primary-red);
-                top: -20px;
-            }
-            
-            .fortune-wheel-app #spinBtn {
-                padding: 0.6rem 2rem;
-                font-size: 0.85rem;
-            }
-            
-            .fortune-wheel-app .control-section {
-                padding: 1rem;
-            }
-            
-            .fortune-wheel-app .control-section h3 {
-                font-size: 0.9rem;
-            }
-            
-            .fortune-wheel-app .field-item {
+            .field-item {
                 flex-wrap: wrap;
             }
             
-            .fortune-wheel-app .field-item input[type="text"] {
-                width: 100%;
+            .field-item input[type="text"] {
                 flex: 1 1 100%;
                 margin-bottom: 0.5rem;
             }
             
-            .fortune-wheel-app .field-item input[type="color"] {
-                width: 45px;
-                height: 38px;
-            }
-            
-            .fortune-wheel-app .field-item input[type="number"] {
-                width: 60px;
-            }
-            
-            .fortune-wheel-app .field-item button {
-                flex: 1;
-            }
-            
-            .fortune-wheel-app .button-group button {
-                min-width: auto;
-            }
-            
-            .fortune-wheel-app .import-export-section {
-                padding: 1rem;
-            }
-            
-            .fortune-wheel-app .import-export-section h3 {
-                font-size: 0.9rem;
-            }
-            
-            .fortune-wheel-app .import-export-buttons {
+            .import-export-buttons {
                 flex-direction: column;
             }
             
-            .fortune-wheel-app .import-export-buttons button {
+            .import-export-buttons button {
                 min-width: 100%;
             }
         }
         
         @media (max-width: 480px) {
-            .fortune-wheel-app .main-content {
-                padding: 0.5rem;
-            }
-            
-            .fortune-wheel-app .wheel-section {
+            .fortune-wheel-app {
                 padding: 0.75rem;
             }
             
-            .fortune-wheel-app .wheel-wrapper {
-                width: 200px;
-                height: 200px;
+            .header-inner {
+                padding: 1.5rem 1rem;
             }
             
-            .fortune-wheel-app #wheel {
-                border-width: 3px;
+            .hero-meta {
+                font-size: 0.6rem;
             }
             
-            .fortune-wheel-app .arrow {
-                border-left: 10px solid transparent;
-                border-right: 10px solid transparent;
-                border-top: 20px solid var(--primary-red);
-                top: -18px;
+            .hero-title {
+                font-size: 1.8rem;
             }
             
-            .fortune-wheel-app #spinBtn {
-                padding: 0.5rem 1.5rem;
-                font-size: 0.75rem;
-                letter-spacing: 1px;
-            }
-            
-            .fortune-wheel-app .control-section,
-            .fortune-wheel-app .import-export-section {
-                padding: 0.75rem;
-            }
-            
-            .fortune-wheel-app .control-section h3,
-            .fortune-wheel-app .import-export-section h3 {
+            .hero-desc {
                 font-size: 0.85rem;
-                letter-spacing: 1px;
             }
             
-            .fortune-wheel-app .palette-selector label,
-            label {
+            .wheel-wrapper {
+                width: 220px;
+                height: 220px;
+            }
+            
+            #spinBtn {
+                padding: 0.75rem 2rem;
+                font-size: 0.8rem;
+            }
+            
+            .section-header h2 {
                 font-size: 0.75rem;
             }
             
-            .fortune-wheel-app #paletteSelect,
-            .fortune-wheel-app .field-item input[type="text"],
-            .fortune-wheel-app .field-item input[type="number"] {
-                padding: 0.5rem;
-                font-size: 0.75rem;
+            .section-num {
+                font-size: 1.2rem;
             }
             
-            .fortune-wheel-app .field-item input[type="color"] {
-                width: 40px;
-                height: 35px;
-            }
-            
-            .fortune-wheel-app .field-item input[type="number"] {
-                width: 55px;
-            }
-            
-            .fortune-wheel-app .field-item button,
-            .fortune-wheel-app .button-group button,
-            .fortune-wheel-app .import-export-buttons button {
-                padding: 0.4rem 0.75rem;
+            .btn-group button {
+                min-width: auto;
+                padding: 0.6rem 1rem;
                 font-size: 0.7rem;
-            }
-            
-            .fortune-wheel-app .palette-preview {
-                gap: 2px;
-            }
-            
-            .fortune-wheel-app .palette-color {
-                height: 24px;
-            }
-            
-            .fortune-wheel-app .status-message {
-                font-size: 0.75rem;
-                padding: 0.5rem;
             }
         }
     </style>
 </head>
 <body>
     <div class="fortune-wheel-app">
-        <div class="wheel-container">
-            <div class="header">
-                <h2>🎡 Fortune Wheel</h2>
+        <header class="app-header">
+            <div class="header-inner">
+                <div class="stamp">
+                    <div class="stamp-inner">Game<br>Module<br>v1.0</div>
+                </div>
+                <span class="hero-meta">Module Ref: FW-2024-G1</span>
+                <h1 class="hero-title">Fortune<br>Wheel</h1>
+                <p class="hero-desc">Probability-based selection interface. Spin the wheel to determine outcomes. All results are final and binding.</p>
             </div>
+        </header>
+        
+        <section class="section wheel-section">
+            <div class="section-header">
+                <h2><span class="section-num">01</span> Spin Interface</h2>
+                <span class="section-code">SPIN-MOD-A1</span>
+            </div>
+            <div class="section-content">
+                <div class="wheel-wrapper">
+                    <div class="arrow"></div>
+                    <canvas id="wheel" width="400" height="400"></canvas>
+                </div>
+                <button id="spinBtn" class="btn-primary">▶ Initiate Spin</button>
+            </div>
+        </section>
+        
+        <div class="grid grid-2">
+            <section class="section">
+                <div class="section-header">
+                    <h2><span class="section-num">02</span> Color Palette</h2>
+                    <span class="section-code">COL-CFG-B2</span>
+                </div>
+                <div class="section-content">
+                    <label class="control-label" for="paletteSelect">Select Palette</label>
+                    <select id="paletteSelect"></select>
+                    <div class="palette-preview" id="palettePreview"></div>
+                </div>
+            </section>
             
-            <div class="main-content">
-                <div class="wheel-section">
-                    <div class="wheel-wrapper">
-                        <div class="arrow"></div>
-                        <canvas id="wheel" width="400" height="400"></canvas>
-                    </div>
-                    
-                    <button id="spinBtn">▶️ SPIN</button>
+            <section class="section">
+                <div class="section-header">
+                    <h2><span class="section-num">03</span> Wheel Fields</h2>
+                    <span class="section-code">FLD-CFG-C3</span>
                 </div>
-                
-                <div class="controls-wrapper">
-                    <div class="control-section">
-                        <h3>Color Palette</h3>
-                        <div class="palette-selector">
-                            <label for="paletteSelect">Choose Palette</label>
-                            <select id="paletteSelect"></select>
-                        </div>
-                        <div class="palette-preview" id="palettePreview"></div>
-                    </div>
-                    
-                    <div class="control-section">
-                        <h3>Wheel Fields</h3>
-                        <div id="fieldsList"></div>
-                        <div class="button-group">
-                            <button id="addFieldBtn">+ Add</button>
-                            <button id="clearFieldsBtn">Clear</button>
-                        </div>
+                <div class="section-content">
+                    <div id="fieldsList"></div>
+                    <div class="btn-group">
+                        <button id="addFieldBtn" class="btn-secondary">+ Add Field</button>
+                        <button id="clearFieldsBtn" class="btn-danger">Clear All</button>
                     </div>
                 </div>
-                
-                <div class="import-export-section">
-                    <h3>Import / Export Settings</h3>
-                    <div class="import-export-buttons">
-                        <button id="exportBtn">📥 Export Configuration</button>
-                        <button id="importBtn">📤 Import Configuration</button>
-                        <input type="file" id="fileInput" accept=".json" />
-                    </div>
-                    <div id="statusMessage" class="status-message"></div>
-                </div>
-            </div>
+            </section>
         </div>
+        
+        <section class="section">
+            <div class="section-header">
+                <h2><span class="section-num">04</span> Data Management</h2>
+                <span class="section-code">DAT-MGT-D4</span>
+            </div>
+            <div class="section-content">
+                <p style="margin: 0 0 1rem; font-size: 0.85rem; color: var(--rlx-brown);">Export current configuration or import a previously saved setup. All data is stored in JSON format.</p>
+                <div class="import-export-buttons">
+                    <button id="exportBtn" class="btn-secondary">📥 Export Configuration</button>
+                    <button id="importBtn" class="btn-ghost">📤 Import Configuration</button>
+                    <input type="file" id="fileInput" accept=".json" />
+                </div>
+                <div id="statusMessage" class="status-message"></div>
+            </div>
+        </section>
+        
+        <footer class="app-footer">
+            <span>Redlix Corporation // Game Systems Division // 2024</span>
+            <span style="opacity: 0.6; font-size: 0.6rem;">Fortune Wheel Module — Authorized for recreational use only.</span>
+        </footer>
     </div>
 
     <script>
         (function() {
             'use strict';
             
-            // Wait for DOM to be fully loaded
             function initFortuneWheel() {
-                // Modern color palettes
+                // Modern color palettes matching Redlix design
                 const colorPalettes = {
+                    'Redlix Standard': ['#C23A2B', '#D4793A', '#B8954F', '#2D6B6B', '#3D3229'],
+                    'Propaganda': ['#C23A2B', '#8B2820', '#D4793A', '#B8954F', '#1A1918'],
+                    'Terminal': ['#2D6B6B', '#1E4A4A', '#3D8B8B', '#5AABAB', '#1A1918'],
+                    'Document': ['#3D3229', '#5A4A3D', '#B8954F', '#D4793A', '#C23A2B'],
                     'Sunset Vibes': ['#FF6B6B', '#FF8E53', '#FFA07A', '#FFB84D', '#FFC947'],
                     'Ocean Breeze': ['#0A4D68', '#088395', '#05BFDB', '#00FFCA', '#7DFFEA'],
                     'Forest Fresh': ['#1B4D3E', '#2D8B5F', '#3FA876', '#6FC77B', '#A8E6A1'],
-                    'Candy Pop': ['#FF6FB5', '#FF8DC7', '#FFABDB', '#C77DFF', '#9D4EDD'],
                     'Neon Nights': ['#FF006E', '#FB5607', '#FFBE0B', '#8338EC', '#3A86FF'],
-                    'Peachy Keen': ['#FFB5A7', '#FFC3A0', '#FFD1B0', '#FFDFB3', '#FFEDC2'],
                     'Berry Blast': ['#D62828', '#F77F00', '#FCBF49', '#EAE2B7', '#C9ADA7'],
-                    'Tropical Dream': ['#06FFA5', '#00D4FF', '#B75CFF', '#FF6EC7', '#FFD100'],
-                    'Retro Wave': ['#FF006E', '#8338EC', '#3A86FF', '#06FFA5', '#FFBE0B'],
                     'Cool Mint': ['#52B788', '#74C69D', '#95D5B2', '#B7E4C7', '#D8F3DC']
                 };
                 
-                let currentPalette = 'Sunset Vibes';
+                let currentPalette = 'Redlix Standard';
                 let fields = [
-                    { text: 'Prize 1', color: '#FF6B6B', percentage: null },
-                    { text: 'Prize 2', color: '#4ECDC4', percentage: null },
-                    { text: 'Prize 3', color: '#45B7D1', percentage: null },
-                    { text: 'Prize 4', color: '#FFA07A', percentage: null }
+                    { text: 'Prize 1', color: '#C23A2B', percentage: null },
+                    { text: 'Prize 2', color: '#2D6B6B', percentage: null },
+                    { text: 'Prize 3', color: '#D4793A', percentage: null },
+                    { text: 'Prize 4', color: '#B8954F', percentage: null }
                 ];
                 
                 let isSpinning = false;
@@ -789,23 +829,17 @@
                 
                 function playClickSound() {
                     const ctx = initAudioContext();
-                    
-                    // Create a more satisfying button click with multiple frequencies
                     const frequencies = [200, 400, 600];
                     frequencies.forEach((freq, index) => {
                         const oscillator = ctx.createOscillator();
                         const gainNode = ctx.createGain();
-                        
                         oscillator.connect(gainNode);
                         gainNode.connect(ctx.destination);
-                        
                         oscillator.frequency.value = freq;
                         oscillator.type = 'sine';
-                        
                         const startTime = ctx.currentTime + (index * 0.01);
                         gainNode.gain.setValueAtTime(0.1, startTime);
                         gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + 0.08);
-                        
                         oscillator.start(startTime);
                         oscillator.stop(startTime + 0.08);
                     });
@@ -813,73 +847,51 @@
                 
                 function startSpinningSound(duration) {
                     const ctx = initAudioContext();
-                    
                     spinStartTime = ctx.currentTime;
                     spinDuration = duration;
-                    
                     spinningGainNode = ctx.createGain();
                     spinningGainNode.connect(ctx.destination);
-                    
-                    // Fade in
                     spinningGainNode.gain.setValueAtTime(0, ctx.currentTime);
                     spinningGainNode.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.3);
                     
-                    // Melody notes: C-E-G-C (arpeggiated major chord)
                     const melodyNotes = [523.25, 659.25, 783.99, 1046.5];
                     let noteIndex = 0;
                     
-                    // Function to play one note with dynamic timing
                     function playNote() {
                         if (!spinningGainNode) return;
-                        
                         const ctx = audioContext;
                         const elapsed = ctx.currentTime - spinStartTime;
                         const progress = Math.min(elapsed / spinDuration, 1);
-                        
-                        // Calculate tempo based on easing curve (fast at start, slow at end)
-                        // Using inverse of cubic-bezier-like curve
                         const tempoProgress = 1 - Math.pow(progress, 2.5);
-                        currentTempo = 0.3 + (tempoProgress * 1.7); // Range: 0.3x to 2.0x speed
-                        
-                        // Calculate note duration based on tempo
+                        currentTempo = 0.3 + (tempoProgress * 1.7);
                         const baseNoteDuration = 0.15;
                         const noteDuration = baseNoteDuration / currentTempo;
                         
                         const oscillator = ctx.createOscillator();
                         const noteGain = ctx.createGain();
                         const filter = ctx.createBiquadFilter();
-                        
                         oscillator.connect(filter);
                         filter.connect(noteGain);
                         noteGain.connect(spinningGainNode);
-                        
                         oscillator.type = 'triangle';
                         oscillator.frequency.value = melodyNotes[noteIndex];
-                        
                         filter.type = 'lowpass';
                         filter.frequency.value = 2000;
                         filter.Q.value = 1;
                         
-                        // Envelope for each note
                         const now = ctx.currentTime;
                         noteGain.gain.setValueAtTime(0, now);
                         noteGain.gain.linearRampToValueAtTime(0.8, now + 0.01);
                         noteGain.gain.linearRampToValueAtTime(0, now + noteDuration);
-                        
                         oscillator.start(now);
                         oscillator.stop(now + noteDuration);
-                        
-                        // Move to next note
                         noteIndex = (noteIndex + 1) % melodyNotes.length;
                         
-                        // Schedule next note with dynamic interval
                         if (progress < 1) {
-                            const nextInterval = noteDuration * 1000; // Convert to milliseconds
+                            const nextInterval = noteDuration * 1000;
                             melodyInterval = setTimeout(playNote, nextInterval);
                         }
                     }
-                    
-                    // Start the melody
                     playNote();
                 }
                 
@@ -887,64 +899,44 @@
                     if (spinningGainNode && audioContext) {
                         const ctx = audioContext;
                         const fadeOutTime = 0.5;
-                        
-                        // Fade out the melody
                         spinningGainNode.gain.linearRampToValueAtTime(0.01, ctx.currentTime + fadeOutTime);
-                        
-                        // Clear interval and clean up
                         if (melodyInterval) {
                             clearTimeout(melodyInterval);
                             melodyInterval = null;
                         }
-                        
-                        setTimeout(() => {
-                            spinningGainNode = null;
-                        }, fadeOutTime * 1000 + 100);
+                        setTimeout(() => { spinningGainNode = null; }, fadeOutTime * 1000 + 100);
                     }
                 }
                 
                 function playStopSound() {
                     const ctx = initAudioContext();
-                    
-                    // Create a satisfying "ding" sound when the wheel stops
-                    const frequencies = [523.25, 659.25, 783.99]; // C, E, G chord
-                    
+                    const frequencies = [523.25, 659.25, 783.99];
                     frequencies.forEach((freq, index) => {
                         const oscillator = ctx.createOscillator();
                         const gainNode = ctx.createGain();
                         const filter = ctx.createBiquadFilter();
-                        
                         oscillator.connect(filter);
                         filter.connect(gainNode);
                         gainNode.connect(ctx.destination);
-                        
                         oscillator.type = 'sine';
                         oscillator.frequency.value = freq;
-                        
                         filter.type = 'lowpass';
                         filter.frequency.value = 2000;
-                        
                         const startTime = ctx.currentTime + (index * 0.05);
                         gainNode.gain.setValueAtTime(0.15, startTime);
                         gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + 0.8);
-                        
                         oscillator.start(startTime);
                         oscillator.stop(startTime + 0.8);
                     });
                     
-                    // Add a subtle bell-like overtone
                     const bellOsc = ctx.createOscillator();
                     const bellGain = ctx.createGain();
-                    
                     bellOsc.connect(bellGain);
                     bellGain.connect(ctx.destination);
-                    
                     bellOsc.type = 'sine';
-                    bellOsc.frequency.value = 1046.5; // High C
-                    
+                    bellOsc.frequency.value = 1046.5;
                     bellGain.gain.setValueAtTime(0.08, ctx.currentTime + 0.1);
                     bellGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
-                    
                     bellOsc.start(ctx.currentTime + 0.1);
                     bellOsc.stop(ctx.currentTime + 0.6);
                 }
@@ -952,30 +944,24 @@
                 function renderPaletteSelector() {
                     const select = document.getElementById('paletteSelect');
                     select.innerHTML = '';
-                    
                     Object.keys(colorPalettes).forEach(paletteName => {
                         const option = document.createElement('option');
                         option.value = paletteName;
                         option.textContent = paletteName;
-                        if (paletteName === currentPalette) {
-                            option.selected = true;
-                        }
+                        if (paletteName === currentPalette) option.selected = true;
                         select.appendChild(option);
                     });
-                    
                     select.addEventListener('change', (e) => {
                         currentPalette = e.target.value;
                         applyPalette(currentPalette);
                         updatePalettePreview();
                     });
-                    
                     updatePalettePreview();
                 }
                 
                 function updatePalettePreview() {
                     const preview = document.getElementById('palettePreview');
                     preview.innerHTML = '';
-                    
                     const colors = colorPalettes[currentPalette];
                     colors.forEach(color => {
                         const colorBox = document.createElement('div');
@@ -988,11 +974,9 @@
                 
                 function applyPalette(paletteName) {
                     const colors = colorPalettes[paletteName];
-                    
                     fields.forEach((field, index) => {
                         field.color = colors[index % colors.length];
                     });
-                    
                     renderFields();
                     drawWheel();
                 }
@@ -1005,18 +989,14 @@
                 function calculatePercentages() {
                     const customFields = fields.filter(f => f.percentage !== null);
                     const autoFields = fields.filter(f => f.percentage === null);
-                    
                     let customTotal = customFields.reduce((sum, f) => sum + f.percentage, 0);
-                    
                     if (customTotal > 100) {
                         customTotal = 100;
                         customFields.forEach(f => f.percentage = (f.percentage / customTotal) * 100);
                         customTotal = 100;
                     }
-                    
                     const remaining = 100 - customTotal;
                     const autoPercentage = autoFields.length > 0 ? remaining / autoFields.length : 0;
-                    
                     return fields.map(f => ({
                         ...f,
                         actualPercentage: f.percentage !== null ? f.percentage : autoPercentage
@@ -1031,21 +1011,18 @@
                     const radius = canvas.width / 2 - 10;
                     
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    
                     const fieldsWithPercentages = calculatePercentages();
                     let startAngle = 0;
                     
                     fieldsWithPercentages.forEach((field, index) => {
                         const sliceAngle = (field.actualPercentage / 100) * 2 * Math.PI;
-                        
                         ctx.beginPath();
                         ctx.fillStyle = field.color;
                         ctx.moveTo(centerX, centerY);
                         ctx.arc(centerX, centerY, radius, startAngle, startAngle + sliceAngle);
                         ctx.lineTo(centerX, centerY);
                         ctx.fill();
-                        
-                        ctx.strokeStyle = '#fff';
+                        ctx.strokeStyle = '#1A1918';
                         ctx.lineWidth = 2;
                         ctx.stroke();
                         
@@ -1053,13 +1030,26 @@
                         ctx.translate(centerX, centerY);
                         ctx.rotate(startAngle + sliceAngle / 2);
                         ctx.textAlign = 'center';
-                        ctx.fillStyle = '#fff';
-                        ctx.font = 'bold 16px Arial';
+                        ctx.fillStyle = '#F4EDE1';
+                        ctx.font = 'bold 14px "Space Grotesk", sans-serif';
+                        ctx.shadowColor = 'rgba(0,0,0,0.5)';
+                        ctx.shadowBlur = 3;
+                        ctx.shadowOffsetX = 1;
+                        ctx.shadowOffsetY = 1;
                         ctx.fillText(field.text, radius / 2, 5);
                         ctx.restore();
-                        
                         startAngle += sliceAngle;
                     });
+                    
+                    // Center circle
+                    ctx.beginPath();
+                    ctx.arc(centerX, centerY, 20, 0, 2 * Math.PI);
+                    ctx.fillStyle = '#1A1918';
+                    ctx.fill();
+                    ctx.beginPath();
+                    ctx.arc(centerX, centerY, 12, 0, 2 * Math.PI);
+                    ctx.fillStyle = '#B8954F';
+                    ctx.fill();
                 }
                 
                 function renderFields() {
@@ -1091,7 +1081,7 @@
                         percentInput.type = 'number';
                         percentInput.min = '0';
                         percentInput.max = '100';
-                        percentInput.placeholder = 'Auto';
+                        percentInput.placeholder = '%';
                         percentInput.value = field.percentage !== null ? field.percentage : '';
                         percentInput.addEventListener('input', (e) => {
                             fields[index].percentage = e.target.value ? parseFloat(e.target.value) : null;
@@ -1099,14 +1089,15 @@
                         });
                         
                         const removeBtn = document.createElement('button');
-                        removeBtn.textContent = 'Remove';
+                        removeBtn.className = 'btn-ghost';
+                        removeBtn.textContent = '✕';
                         removeBtn.addEventListener('click', () => {
                             if (fields.length > 2) {
                                 fields.splice(index, 1);
                                 renderFields();
                                 drawWheel();
                             } else {
-                                alert('Must have at least 2 fields');
+                                showStatus('Minimum 2 fields required', 'error');
                             }
                         });
                         
@@ -1120,40 +1111,35 @@
                 
                 document.getElementById('addFieldBtn').addEventListener('click', () => {
                     const newColor = getNextColorForPalette();
-                    
                     fields.push({
                         text: `Prize ${fields.length + 1}`,
                         color: newColor,
                         percentage: null
                     });
-                    
                     renderFields();
                     drawWheel();
                 });
                 
                 document.getElementById('clearFieldsBtn').addEventListener('click', () => {
-                    if (confirm('Are you sure you want to clear all fields? This will reset to 2 default fields.')) {
+                    if (confirm('Clear all fields and reset to defaults?')) {
+                        const colors = colorPalettes[currentPalette];
                         fields = [
-                            { text: 'Prize 1', color: getNextColorForPalette(), percentage: null },
-                            { text: 'Prize 2', color: getNextColorForPalette(), percentage: null }
+                            { text: 'Prize 1', color: colors[0], percentage: null },
+                            { text: 'Prize 2', color: colors[1], percentage: null }
                         ];
                         renderFields();
                         drawWheel();
+                        showStatus('Fields cleared successfully', 'success');
                     }
                 });
                 
                 document.getElementById('spinBtn').addEventListener('click', () => {
                     if (isSpinning) return;
-                    
-                    // Play click sound when button is pressed
                     playClickSound();
-                    
                     isSpinning = true;
                     document.getElementById('spinBtn').disabled = true;
                     
                     const canvas = document.getElementById('wheel');
-                    
-                    // First, select a winner based on weighted percentages
                     const fieldsWithPercentages = calculatePercentages();
                     const random = Math.random() * 100;
                     let accumulatedPercentage = 0;
@@ -1169,38 +1155,23 @@
                         }
                     }
                     
-                    // Calculate the angle of the winner segment
                     let winnerStartAngle = 0;
                     for (let i = 0; i < winnerIndex; i++) {
                         winnerStartAngle += (fieldsWithPercentages[i].actualPercentage / 100) * 360;
                     }
                     const winnerSliceAngle = (winner.actualPercentage / 100) * 360;
-                    
-                    // Add significant randomness within the winning segment
                     const randomOffsetInSegment = (Math.random() - 0.5) * winnerSliceAngle * 0.9;
                     const winnerCenterAngle = winnerStartAngle + (winnerSliceAngle / 2) + randomOffsetInSegment;
-                    
-                    // Calculate rotation needed to align winner to the top (pointer at 0 degrees)
                     const targetAngle = 360 - winnerCenterAngle;
-                    
-                    // Significantly increased spin variation (3-15 full rotations)
                     const spins = 3 + Math.floor(Math.random() * 13);
-                    
-                    // Always spin in positive direction (clockwise)
                     const totalRotation = Math.abs(spins * 360 + targetAngle);
                     
-                    // Reset to 0 and spin forward to avoid any backwards motion
                     canvas.style.transition = 'none';
                     canvas.style.transform = 'rotate(0deg)';
                     currentRotation = 0;
-                    
-                    // Force reflow to apply the reset
                     canvas.offsetHeight;
                     
-                    // Expanded speed variation (2.5s to 6s) for more dramatic differences
                     const duration = 2.5 + Math.random() * 3.5;
-                    
-                    // More varied easing curves for different spin feels
                     const easingCurves = [
                         'cubic-bezier(0.17, 0.67, 0.12, 0.99)',
                         'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
@@ -1213,24 +1184,16 @@
                     canvas.style.transform = `rotate(${totalRotation}deg)`;
                     currentRotation = totalRotation;
                     
-                    // Start spinning sound with duration parameter
                     startSpinningSound(duration);
                     
                     setTimeout(() => {
-                        // Stop spinning sound
                         stopSpinningSound();
-                        
-                        // Play stop sound when wheel stops
-                        setTimeout(() => {
-                            playStopSound();
-                        }, 100);
-                        
+                        setTimeout(() => { playStopSound(); }, 100);
                         isSpinning = false;
                         document.getElementById('spinBtn').disabled = false;
                     }, duration * 1000);
                 });
                 
-                // Export configuration
                 function exportConfig() {
                     const config = {
                         version: '1.0',
@@ -1246,7 +1209,6 @@
                     const dataStr = JSON.stringify(config, null, 2);
                     const dataBlob = new Blob([dataStr], { type: 'application/json' });
                     const url = URL.createObjectURL(dataBlob);
-                    
                     const link = document.createElement('a');
                     link.href = url;
                     link.download = `wheel-config-${Date.now()}.json`;
@@ -1254,84 +1216,58 @@
                     link.click();
                     document.body.removeChild(link);
                     URL.revokeObjectURL(url);
-                    
-                    showStatus('Configuration exported successfully!', 'success');
+                    showStatus('Configuration exported successfully', 'success');
                 }
                 
-                // Import configuration
                 function importConfig(file) {
                     const reader = new FileReader();
-                    
                     reader.onload = function(e) {
                         try {
                             const config = JSON.parse(e.target.result);
-                            
-                            // Validate config
                             if (!config.fields || !Array.isArray(config.fields)) {
-                                throw new Error('Invalid configuration file: missing fields array');
+                                throw new Error('Invalid configuration: missing fields array');
                             }
-                            
                             if (config.fields.length < 2) {
                                 throw new Error('Configuration must have at least 2 fields');
                             }
-                            
-                            // Apply configuration
                             fields = config.fields.map(f => ({
                                 text: f.text || 'Prize',
-                                color: f.color || '#FF6B6B',
+                                color: f.color || '#C23A2B',
                                 percentage: f.percentage !== undefined ? f.percentage : null
                             }));
-                            
-                            // Set palette if valid
                             if (config.palette && colorPalettes[config.palette]) {
                                 currentPalette = config.palette;
-                                const select = document.getElementById('paletteSelect');
-                                select.value = currentPalette;
+                                document.getElementById('paletteSelect').value = currentPalette;
                                 updatePalettePreview();
                             }
-                            
-                            // Redraw everything
                             renderFields();
                             drawWheel();
-                            
-                            showStatus('Configuration imported successfully!', 'success');
+                            showStatus('Configuration imported successfully', 'success');
                         } catch (error) {
-                            showStatus(`Error importing configuration: ${error.message}`, 'error');
+                            showStatus(`Import error: ${error.message}`, 'error');
                             console.error('Import error:', error);
                         }
                     };
-                    
                     reader.onerror = function() {
-                        showStatus('Error reading file. Please try again.', 'error');
+                        showStatus('Error reading file', 'error');
                     };
-                    
                     reader.readAsText(file);
                 }
                 
-                // Show status message
                 function showStatus(message, type) {
                     const statusEl = document.getElementById('statusMessage');
                     statusEl.textContent = message;
                     statusEl.className = `status-message ${type}`;
-                    
-                    setTimeout(() => {
-                        statusEl.className = 'status-message';
-                    }, 5000);
+                    setTimeout(() => { statusEl.className = 'status-message'; }, 5000);
                 }
                 
-                // Event listeners for import/export
                 document.getElementById('exportBtn').addEventListener('click', exportConfig);
-                
                 document.getElementById('importBtn').addEventListener('click', () => {
                     document.getElementById('fileInput').click();
                 });
-                
                 document.getElementById('fileInput').addEventListener('change', (e) => {
                     const file = e.target.files[0];
-                    if (file) {
-                        importConfig(file);
-                    }
-                    // Reset input so the same file can be selected again
+                    if (file) importConfig(file);
                     e.target.value = '';
                 });
                 
@@ -1341,11 +1277,9 @@
                 drawWheel();
             }
             
-            // Check if DOM is already loaded
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', initFortuneWheel);
             } else {
-                // DOM is already loaded
                 initFortuneWheel();
             }
         })();
